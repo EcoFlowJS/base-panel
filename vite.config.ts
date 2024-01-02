@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: "/auth",
   server: {
+    open: true,
     port: 3000,
     proxy: {
       "/admin": {
