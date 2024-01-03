@@ -1,10 +1,10 @@
 {
   "name": "@eco-flow/base-panel",
   "private": true,
-  "main": "./index.js",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
   "version": "0.1.0",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,8 +12,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@eco-flow/components-lib": "^0.1.0",
+    "axios": "^1.6.3",
+    "i": "^0.3.7",
+    "jotai": "^2.6.1",
+    "npm": "^10.2.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.12",
+    "react-router-dom": "^6.21.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -21,9 +28,12 @@
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   }
