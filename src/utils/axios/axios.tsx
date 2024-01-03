@@ -1,25 +1,28 @@
 import axios from "axios";
 
-const instance = axios.create();
+const instance = axios.create({ withCredentials: true });
 
 instance.defaults.baseURL = "http://localhost:4000/systemApi/";
 instance.defaults.headers.common["Content-Type"] = "application/json";
+instance.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
 instance.interceptors.response.use(
   (resp) => resp,
   async (error) => {
     if (error.response.status === 401) {
-      const response = await axios.put(
-        "users/genTokens",
+      const response = await instance.patch(
+        "auth/users/refreshToken",
         {},
         { withCredentials: true }
       );
+      console.log(response);
+
       if (response.status === 200) {
-        axios.defaults.headers.common[
+        instance.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data["token"]}`;
 
-        return axios(error.config);
+        return instance(error.config);
       }
     }
     return error;

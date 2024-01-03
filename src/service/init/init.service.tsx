@@ -18,6 +18,9 @@ const promise = new Promise<any>(async (resolve, reject) => {
       result.isNew = true;
     }
     if (res.isAuth && !res.isNewClient) {
+      const isAuth = await axios.get("auth/users/isAuthenticated");
+      // const isAuth = await axios.patch("auth/users/refreshToken", {});
+      console.log(isAuth);
       //TODO: Log in page loading logic
     }
 
