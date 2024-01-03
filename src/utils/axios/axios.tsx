@@ -20,7 +20,7 @@ instance.interceptors.response.use(
       if (response.status === 200) {
         instance.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${response.data["token"]}`;
+        ] = `Bearer ${response.data["payload"]}`;
 
         return instance(error.config);
       }

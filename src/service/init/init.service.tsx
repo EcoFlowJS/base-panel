@@ -17,12 +17,13 @@ const promise = new Promise<any>(async (resolve, reject) => {
     if (res.isAuth && res.isNewClient) {
       result.isNew = true;
     }
-    if (res.isAuth && !res.isNewClient) {
-      const isAuth = await axios.get("auth/users/isAuthenticated");
-      // const isAuth = await axios.patch("auth/users/refreshToken", {});
-      console.log(isAuth);
-      //TODO: Log in page loading logic
-    }
+    if (res.isAuth && !res.isNewClient)
+      try {
+        if ((await axios.get("auth/users/isAuthenticated")).data.success)
+          result.isLoggedIn = true;
+      } catch {
+        result.isLoggedIn = false;
+      }
 
     resolve(result);
   } catch (err) {
