@@ -1,6 +1,7 @@
 import { Error404 } from "@eco-flow/components-lib";
+import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import BaseLayout from "../layout/BaseLayout.layout";
+const BaseLayout = lazy(() => import("../layout/BaseLayout.layout"));
 
 export default () => {
   return (
