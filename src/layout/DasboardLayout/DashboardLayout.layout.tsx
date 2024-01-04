@@ -1,3 +1,4 @@
+import { Button } from "@eco-flow/components-lib";
 import { useEffect } from "react";
 
 export default function DashboardLayout() {
@@ -14,7 +15,7 @@ export default function DashboardLayout() {
         alignItems: "center",
       }}
     >
-      sdf
+      <Button text="Dashboard" props={{ onClick: () => console.log("ac") }} />
     </div>
   );
 }
