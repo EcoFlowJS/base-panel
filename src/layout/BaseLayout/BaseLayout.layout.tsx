@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import initService from "../service/init/init.service";
-import redirect from "../utils/redirect/redirect";
+import initService from "../../service/init/init.service";
+import redirect from "../../utils/redirect/redirect";
 import { useEffect } from "react";
 
 export default function BaseLayout() {
