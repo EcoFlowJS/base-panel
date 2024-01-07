@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import Routes from "./routes/routes";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback/ErrorFallback.componennt";
@@ -13,11 +13,9 @@ export default function App() {
   }, []);
   return (
     <CustomProvider theme={darkMode ? "dark" : "light"}>
-      <Suspense fallback="loading...">
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <Routes />
-        </ErrorBoundary>
-      </Suspense>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Routes />
+      </ErrorBoundary>
     </CustomProvider>
   );
 }

@@ -1,17 +1,31 @@
 import { Error404 } from "@eco-flow/components-lib";
-import { lazy } from "react";
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DashboardLayout from "../layout/DasboardLayout/DashboardLayout.layout";
-import SetupLayout from "../layout/SetupLayout/SetupLayout.layout";
-import LoginLayout from "../layout/LoginLayout/LoginLayout.layout";
+import Loading from "../components/Loading/Loading.component";
 const BaseLayout = lazy(() => import("../layout/BaseLayout/BaseLayout.layout"));
+const SetupLayout = lazy(
+  () => import("../layout/SetupLayout/SetupLayout.layout")
+);
+const LoginLayout = lazy(
+  () => import("../layout/LoginLayout/LoginLayout.layout")
+);
+const DashboardLayout = lazy(
+  () => import("../layout/DasboardLayout/DashboardLayout.layout")
+);
 
 export default () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/auth" element={<BaseLayout />}>
+          <Route
+            path="/auth"
+            element={
+              <Suspense fallback={<Loading />}>
+                <BaseLayout />
+              </Suspense>
+            }
+          >
             <Route path="setup" element={<SetupLayout />} />
             <Route path="login" element={<LoginLayout />} />
             <Route path="dashboard" element={<DashboardLayout />} />
