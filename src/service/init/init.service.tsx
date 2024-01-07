@@ -25,7 +25,7 @@ const promise = new Promise<any>(async (resolve, reject) => {
         result.isLoggedIn = false;
       }
 
-    resolve(result);
+    setTimeout(() => resolve(result), 200);
   } catch (err) {
     reject(err);
   }
