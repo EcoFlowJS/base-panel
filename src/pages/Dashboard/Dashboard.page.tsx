@@ -1,7 +1,7 @@
 import { Container, Content, Footer, Header } from "rsuite";
 import DashboardHeader from "../../components/Dashboard/header/Header.component";
 import DashboardContents from "../../components/Dashboard/content/Contents.component";
-import DashboardFooter from "../../components/Dashboard/footer/footer.component";
+import DashboardFooter from "../../components/Dashboard/footer/Footer.component";
 
 export default function Dashboard() {
   return (

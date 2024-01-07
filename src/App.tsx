@@ -7,7 +7,7 @@ import themeMode from "./store/theme.mode";
 import { useAtom } from "jotai";
 
 export default function App() {
-  const [darkMode, setDarkMode] = useAtom(themeMode);
+  const [darkMode] = useAtom(themeMode);
   useEffect(() => {
     document.title = "Loading...";
   }, []);
