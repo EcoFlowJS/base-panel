@@ -7,6 +7,10 @@ import styles from "./style";
 import Button from "./button/Button";
 
 export default function DashboardContents() {
+  const redirect = (url: string) => () => {
+    window.location.replace(window.location.origin + url);
+  };
+
   return (
     <FlexboxGrid
       justify="center"
@@ -27,6 +31,7 @@ export default function DashboardContents() {
             labletext="Admin Panel"
             style={styles.IconButton}
             circle
+            onClick={redirect("/admin")}
           />
           <Button
             color="orange"
@@ -35,6 +40,7 @@ export default function DashboardContents() {
             labletext="Schema Panel"
             style={styles.IconButton}
             circle
+            onClick={redirect("/editor/schema")}
           />
           <Button
             color="yellow"
@@ -43,6 +49,7 @@ export default function DashboardContents() {
             style={{ ...styles.IconButton, rotate: "-90deg" }}
             circle
             labletext="Flow Panel"
+            onClick={redirect("/editor/flow")}
           />
         </Stack>
       </FlexboxGrid.Item>
