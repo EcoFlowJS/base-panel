@@ -15,7 +15,6 @@ instance.interceptors.response.use(
         {},
         { withCredentials: true }
       );
-      console.log(response);
 
       if (response.status === 200) {
         instance.defaults.headers.common[
