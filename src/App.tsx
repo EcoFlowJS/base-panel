@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useLayoutEffect } from "react";
 import Routes from "./routes/routes";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback/ErrorFallback.componennt";
@@ -9,7 +9,7 @@ import Loading from "./components/Loading/Loading.component";
 
 export default function App() {
   const [darkMode] = useAtom(themeMode);
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = "Loading...";
   }, []);
   return (

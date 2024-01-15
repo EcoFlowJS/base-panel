@@ -5,6 +5,7 @@ import { BsDatabaseFill } from "react-icons/bs";
 import { TbBinaryTree2 } from "react-icons/tb";
 import styles from "./style";
 import Button from "./button/Button";
+import { Link } from "react-router-dom";
 
 export default function DashboardContents() {
   const redirect = (url: string) => () => {
@@ -33,24 +34,26 @@ export default function DashboardContents() {
             circle
             onClick={redirect("/admin")}
           />
-          <Button
-            color="orange"
-            appearance="primary"
-            icon={<BsDatabaseFill />}
-            labletext="Schema Panel"
-            style={styles.IconButton}
-            circle
-            onClick={redirect("/editor/schema")}
-          />
-          <Button
-            color="yellow"
-            appearance="primary"
-            icon={<TbBinaryTree2 />}
-            style={{ ...styles.IconButton, rotate: "-90deg" }}
-            circle
-            labletext="Flow Panel"
-            onClick={redirect("/editor/flow")}
-          />
+          <Link to={{ pathname: "/editor/schema" }} target="_blank">
+            <Button
+              color="orange"
+              appearance="primary"
+              icon={<BsDatabaseFill />}
+              labletext="Schema Panel"
+              style={styles.IconButton}
+              circle
+            />
+          </Link>
+          <Link to={{ pathname: "/editor/flow" }} target="_blank">
+            <Button
+              color="yellow"
+              appearance="primary"
+              icon={<TbBinaryTree2 />}
+              style={{ ...styles.IconButton, rotate: "-90deg" }}
+              circle
+              labletext="Flow Panel"
+            />
+          </Link>
         </Stack>
       </FlexboxGrid.Item>
     </FlexboxGrid>
