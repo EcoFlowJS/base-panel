@@ -3,12 +3,12 @@ import initService from "../../service/init/init.service";
 import redirect from "../../utils/redirect/redirect";
 import { useEffect } from "react";
 import { useAtom } from "jotai";
-import initStatus from "../../store/initStatus.store";
+import initStatusState from "../../store/initStatusState.store";
 
 export default function BaseLayout() {
   const status = initService();
   const re = redirect();
-  const [_initStatus, setinitStatus] = useAtom(initStatus);
+  const [_initStatus, setinitStatus] = useAtom(initStatusState);
 
   useEffect(() => {
     setinitStatus({ ...status });
