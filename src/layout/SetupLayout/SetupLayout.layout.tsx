@@ -1,3 +1,33 @@
+import { Col, Container, Content, FlexboxGrid, Panel } from "rsuite";
+import SetupPage from "../../pages/SetupPage/SetupPage";
+import { useLayoutEffect } from "react";
+
 export default function SetupLayout() {
-  return <div>SetupLayout</div>;
+  useLayoutEffect(() => {
+    document.title = "EcoFlow Set-up";
+  }, []);
+  return (
+    <Container>
+      <Content>
+        <FlexboxGrid
+          justify="center"
+          align="middle"
+          style={{ height: "100vh" }}
+        >
+          <FlexboxGrid.Item
+            as={Col}
+            colspan={12}
+            xs={24}
+            sm={24}
+            md={12}
+            style={{ padding: "80px 0", maxWidth: 850 }}
+          >
+            <Panel bordered shaded>
+              <SetupPage />
+            </Panel>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+      </Content>
+    </Container>
+  );
 }

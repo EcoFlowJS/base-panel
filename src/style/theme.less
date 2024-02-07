@@ -8,8 +8,31 @@
 
 .rs-theme-dark {
   --rs-body: #292929;
+  --rs-steps-border-state-finish: #ffffff;
+  --rs-steps-state-finish: #ffffff;
+  --rs-steps-state-process: #bfbfbf;
+  .rs-steps-item-status-process {
+    .rs-steps-item-content {
+      color: #d5d5d5;
+    }
+  }
 }
 
 .rs-theme-light {
   --rs-body: #fefef9;
+  --rs-steps-border-state-finish: #202020;
+  --rs-steps-state-finish: #202020;
+  --rs-steps-state-process: #292929;
+
+  .rs-steps-item-status-process {
+    .rs-steps-item-content {
+      color: #292929;
+    }
+  }
+
+  .rs-steps-item-status-finish {
+    .rs-steps-item-content {
+      color: #333333;
+    }
+  }
 }
