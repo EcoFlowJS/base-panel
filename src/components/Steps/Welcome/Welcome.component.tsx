@@ -1,5 +1,5 @@
 import { Panel } from "rsuite";
-import StepHeader from "../Header/StepHeader";
+import StepHeader from "../Header/StepHeader.component";
 
 export default function Welcome() {
   return (

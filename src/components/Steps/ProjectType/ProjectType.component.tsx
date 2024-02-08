@@ -1,5 +1,5 @@
 import { Panel, RadioTile, RadioTileGroup } from "rsuite";
-import StepHeader from "../Header/StepHeader";
+import StepHeader from "../Header/StepHeader.component";
 import { Icon } from "@rsuite/icons";
 import { VscNotebookTemplate, VscRepoClone, VscFile } from "react-icons/vsc";
 import { SyntheticEvent, useEffect, useLayoutEffect, useState } from "react";

@@ -1,19 +1,29 @@
 import React, { useEffect } from "react";
 import { Button, Divider, FlexboxGrid, Steps } from "rsuite";
-import Welcome from "../../components/Steps/Welcome/Welcome";
-import ProjectType from "../../components/Steps/ProjectType/ProjectType";
-import UserCreation from "../../components/Steps/UserCreation/UserCreation";
-import DatabaseSetup from "../../components/Steps/Database/DatabaseSetup";
-import ImportTemplate from "../../components/Steps/ImportTemplate/ImportTemplate";
-import FromTemplate from "../../components/Steps/FromTemplate/FromTemplate";
+import Welcome from "../../components/Steps/Welcome/Welcome.component";
+import ProjectType from "../../components/Steps/ProjectType/ProjectType.component";
+import UserCreation from "../../components/Steps/UserCreation/UserCreation.component";
+import DatabaseSetup from "../../components/Steps/Database/DatabaseSetup.component";
+import ImportTemplate from "../../components/Steps/ImportTemplate/ImportTemplate.component";
+import FromTemplate from "../../components/Steps/FromTemplate/FromTemplate.component";
 import defaultValues from "./defaultValues";
 import { ISetupValues } from "./SetupValues.interfaace";
+import validator from "./validatror";
+import { useNotification } from "@eco-flow/components-lib";
 
 export default function SetupPage() {
   const [step, setStep] = React.useState(0);
   const [value, setValue] = React.useState<ISetupValues>(defaultValues);
+  const [error, setError] = React.useState<{
+    errorHeader?: String;
+    errorMessage?: string;
+  }>({});
+  const [loadingDatabaseConfig, setLoadingDatabaseConfig] =
+    React.useState(false);
 
-  useEffect(() => console.log(value), [value]);
+  useEffect(() => {
+    if (error.errorMessage) errorNotification.show();
+  }, [error]);
 
   const onChange = (nextStep: number) => {
     setStep(
@@ -27,7 +37,15 @@ export default function SetupPage() {
     );
   };
 
-  const onNext = () => onChange(step + 1);
+  const errorNotification = useNotification({
+    header: error.errorHeader ? error.errorHeader : "",
+    type: "error",
+    placement: "topEnd",
+    children: <>{error.errorMessage ? error.errorMessage : ""}</>,
+  });
+
+  const onNext = () =>
+    validator(step, value, setError, onChange, setLoadingDatabaseConfig);
   const onPrevious = () => onChange(step - 1);
   const onFinish = () => {
     alert("Finish!");
@@ -109,6 +127,7 @@ export default function SetupPage() {
           Previous
         </Button>
         <Button
+          loading={loadingDatabaseConfig}
           onClick={
             step === 4
               ? onFinish
