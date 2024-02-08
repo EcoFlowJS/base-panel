@@ -54,11 +54,11 @@ const validator = (
           return;
         }
 
-        if (value.userInfo.username.trim().length < 6) {
+        if (value.userInfo.username.trim().length < 5) {
           setError({
             errorHeader: "Invalid Username",
             errorMessage:
-              "Please enter a username with minimum of 6 charecters.",
+              "Please enter a username with minimum of 5 charecters.",
           });
           return;
         }

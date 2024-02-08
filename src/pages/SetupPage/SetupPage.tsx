@@ -10,6 +10,7 @@ import defaultValues from "./defaultValues";
 import { ISetupValues } from "./SetupValues.interfaace";
 import validator from "./validatror";
 import { useNotification } from "@eco-flow/components-lib";
+import Finish from "../../components/Steps/Finish/Finish.component";
 
 export default function SetupPage() {
   const [step, setStep] = React.useState(0);
@@ -113,6 +114,14 @@ export default function SetupPage() {
           defaultvalue={value.importFile}
           onChange={(val) => setValue({ ...value, ...val })}
         />
+      ) : (
+        <></>
+      )}
+      {step === 4 && value.projectType === "blank" ? (
+        <Finish value={value} />
+      ) : step === 3 &&
+        (value.projectType === "import" || value.projectType === "template") ? (
+        <Finish value={value} />
       ) : (
         <></>
       )}
