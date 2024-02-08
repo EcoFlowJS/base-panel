@@ -20,7 +20,7 @@ export default function SetupLayout() {
             xs={24}
             sm={24}
             md={12}
-            style={{ padding: "80px 0", maxWidth: 850 }}
+            style={{ padding: "30px 0", maxWidth: 850 }}
           >
             <Panel bordered shaded>
               <SetupPage />

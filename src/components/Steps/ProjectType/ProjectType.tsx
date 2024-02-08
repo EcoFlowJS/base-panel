@@ -2,9 +2,21 @@ import { Panel, RadioTile, RadioTileGroup } from "rsuite";
 import StepHeader from "../Header/StepHeader";
 import { Icon } from "@rsuite/icons";
 import { VscNotebookTemplate, VscRepoClone, VscFile } from "react-icons/vsc";
-import { useLayoutEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useLayoutEffect, useState } from "react";
 
-export default function ProjectType() {
+interface ProjectTypeProps {
+  defaultValue?: string | number;
+  onEnter?: () => void;
+  onExit?: () => void;
+  onChange?: (value: any, event: SyntheticEvent<Element, Event>) => void;
+}
+
+export default function ProjectType({
+  defaultValue = "blank",
+  onEnter = () => {},
+  onExit = () => {},
+  onChange = () => {},
+}: ProjectTypeProps) {
   const [isInline, setIsInline] = useState(false);
 
   useLayoutEffect(() => {
@@ -14,6 +26,11 @@ export default function ProjectType() {
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  useEffect(() => {
+    onEnter();
+    return onExit();
   }, []);
 
   return (
@@ -28,7 +45,8 @@ export default function ProjectType() {
     >
       <Panel>
         <RadioTileGroup
-          defaultValue="blank"
+          onChange={onChange}
+          defaultValue={defaultValue}
           inline={isInline}
           aria-label="Create new project"
         >
