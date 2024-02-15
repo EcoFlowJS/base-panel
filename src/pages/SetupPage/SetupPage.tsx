@@ -11,6 +11,12 @@ import { ISetupValues } from "./SetupValues.interfaace";
 import validator from "./validatror";
 import { useNotification } from "@eco-flow/components-lib";
 import Finish from "../../components/Steps/Finish/Finish.component";
+import { connectSocketIO } from "../../utils/socket.io/socket.io";
+import processSetup from "../../service/setup/processSetup";
+import { ApiResponse } from "@eco-flow/types";
+import { useAtom } from "jotai";
+import { isClosedServer, isRestartingServer } from "../../store/server.store";
+import isServerOnline from "../../service/server/isServerOnline.service";
 
 export default function SetupPage() {
   const [step, setStep] = React.useState(0);
@@ -21,12 +27,33 @@ export default function SetupPage() {
   }>({});
   const [loadingDatabaseConfig, setLoadingDatabaseConfig] =
     React.useState(false);
+  const [response, setResponse] = React.useState<ApiResponse>({});
+  const [processingStep, setProcessingStep] = React.useState(false);
+
+  const [_restartingServer, setRestartingServer] = useAtom(isRestartingServer);
+  const [_clsoeServer, setCloseServer] = useAtom(isClosedServer);
 
   useEffect(() => {
-    if (error.errorMessage) errorNotification.show();
+    if (error.errorMessage) errorStepNotification.show();
   }, [error]);
 
-  const onChange = (nextStep: number) => {
+  useEffect(() => {
+    if (response.error) {
+      setProcessingStep(false);
+      errorProcessNotification.show();
+    }
+    if (response.success) {
+      successProcessNotification.show();
+      setProcessingStep(true);
+      if (response.payload.restart)
+        setTimeout(
+          () => isServerOnline([setCloseServer, setRestartingServer]),
+          5 * 1000
+        );
+    }
+  }, [response]);
+
+  const stepChange = (nextStep: number) => {
     setStep(
       nextStep < 0
         ? 0
@@ -38,19 +65,48 @@ export default function SetupPage() {
     );
   };
 
-  const errorNotification = useNotification({
+  const errorStepNotification = useNotification({
     header: error.errorHeader ? error.errorHeader : "",
     type: "error",
     placement: "topEnd",
     children: <>{error.errorMessage ? error.errorMessage : ""}</>,
   });
 
+  const errorProcessNotification = useNotification({
+    header: "Error while processing your request",
+    type: "error",
+    placement: "topEnd",
+    children: <>{response.error ? response.payload : ""}</>,
+  });
+
+  const successProcessNotification = useNotification({
+    header: "Successful",
+    type: "success",
+    placement: "topEnd",
+    children: (
+      <>
+        {response.success
+          ? Array.isArray(response.payload)
+            ? response.payload.map((val, key) => {
+                return (
+                  <div key={key}>
+                    {val}
+                    <br />
+                  </div>
+                );
+              })
+            : typeof response.payload === "object"
+            ? response.payload.msg
+            : response.payload
+          : ""}
+      </>
+    ),
+  });
+
   const onNext = () =>
-    validator(step, value, setError, onChange, setLoadingDatabaseConfig);
-  const onPrevious = () => onChange(step - 1);
-  const onFinish = () => {
-    alert("Finish!");
-  };
+    validator(step, value, setError, stepChange, setLoadingDatabaseConfig);
+  const onPrevious = () => stepChange(step - 1);
+  const onFinish = () => processSetup(value).then(setResponse);
 
   return (
     <div>
@@ -118,10 +174,10 @@ export default function SetupPage() {
         <></>
       )}
       {step === 4 && value.projectType === "blank" ? (
-        <Finish value={value} />
+        <Finish value={value} onResponse={setResponse} />
       ) : step === 3 &&
         (value.projectType === "import" || value.projectType === "template") ? (
-        <Finish value={value} />
+        <Finish value={value} onResponse={setResponse} />
       ) : (
         <></>
       )}
@@ -130,12 +186,13 @@ export default function SetupPage() {
       <FlexboxGrid justify="space-between">
         <Button
           onClick={onPrevious}
-          disabled={step === 0}
+          disabled={processingStep || step === 0}
           style={{ minWidth: 80 }}
         >
           Previous
         </Button>
         <Button
+          disabled={processingStep}
           loading={loadingDatabaseConfig}
           onClick={
             step === 4

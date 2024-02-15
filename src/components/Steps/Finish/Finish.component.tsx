@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Col,
   Divider,
@@ -11,16 +11,32 @@ import {
 } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
 import { ISetupValues } from "../../../pages/SetupPage/SetupValues.interfaace";
+import {
+  connectSocketIO,
+  disconnectSocketIO,
+} from "../../../utils/socket.io/socket.io";
+import { ApiResponse } from "@eco-flow/types";
 
 interface FinishProps {
   value?: ISetupValues;
+  onResponse?: (response: ApiResponse) => void;
 }
 
-export default function Finish({ value }: FinishProps) {
+export default function Finish({ value, onResponse = () => {} }: FinishProps) {
   const rightPanelRef = useRef(null);
   const leftPanelRef = useRef(null);
   const [rightPanelHeight, setrightPanelHeight] = useState(0);
   const [leftPanelHeight, setleftPanelHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const IO = connectSocketIO();
+
+    IO.on("importFileSetup", onResponse);
+
+    return () => {
+      disconnectSocketIO(IO);
+    };
+  }, []);
 
   useEffect(() => {
     if (rightPanelRef !== null && leftPanelRef !== null)

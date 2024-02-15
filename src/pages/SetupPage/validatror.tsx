@@ -19,12 +19,13 @@ const validator = (
       errorMessage?: string | undefined;
     }>
   >,
-  next: (nextStep: number) => void,
+  stepChange: (nextStep: number) => void,
   databaseValidating: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+  const next = () => stepChange(step + 1);
   switch (step) {
     case 0:
-      next(step + 1);
+      next();
       break;
 
     case 1:
@@ -33,7 +34,7 @@ const validator = (
         value.projectType === "import" ||
         value.projectType === "template"
       )
-        next(step + 1);
+        next();
       break;
 
     case 2:
@@ -106,7 +107,7 @@ const validator = (
         }
 
         setError({});
-        next(step + 1);
+        next();
       }
 
       if (value.projectType === "import") {
@@ -119,7 +120,7 @@ const validator = (
           return;
         }
         setError({});
-        next(step + 1);
+        next();
       }
 
       if (value.projectType === "template") {
@@ -140,7 +141,7 @@ const validator = (
         }
 
         setError({});
-        next(step + 1);
+        next();
       }
       break;
 
@@ -157,10 +158,10 @@ const validator = (
               });
             if (val.success) {
               setError({});
-              next(step + 1);
+              next();
             }
           });
-        } else next(step + 1);
+        } else next();
       } else return;
       break;
   }

@@ -12,21 +12,27 @@ const isBackedEndOnlineService = async (): Promise<ApiResponse> => {
   }
 };
 
-const isServerOnline = ([_restartingServer, setRestartingServer]: [
+const isServerOnline = ([setClosedServer, setRestartingServer]: [
   Awaited<any>,
   any
 ]) => {
-  // const [_restartingServer, setRestartingServer] = useAtom(isRestartingServer);
-  isBackedEndOnlineService().then((val) => {
-    if (val.success) setTimeout(() => setRestartingServer(false), 1000);
-    if (val.error) {
-      setRestartingServer(true);
-      setTimeout(
-        () => isServerOnline([_restartingServer, setRestartingServer]),
-        1000
-      );
-    }
-  });
+  return new Promise<void>((resolve) =>
+    isBackedEndOnlineService().then((val) => {
+      if (val.success)
+        setTimeout(() => {
+          setClosedServer(false);
+          setRestartingServer(false);
+          resolve();
+        }, 1000);
+      if (val.error) {
+        setRestartingServer(true);
+        setTimeout(
+          () => resolve(isServerOnline([setClosedServer, setRestartingServer])),
+          1000
+        );
+      }
+    })
+  );
 };
 
 export default isServerOnline;

@@ -18,8 +18,7 @@ const validateDatabaseCoonnectionService = async (
   if (databaseConnection.envDatabase)
     databaseConnection.databaseConfigurationDatabase = `env(${databaseConnection.databaseConfigurationDatabase})`;
 
-  return (await axios.post("/setup/database/validate", databaseConnection))
-    .data;
+  return (await axios.post("/setup/blank/validateDB", databaseConnection)).data;
 };
 
 export default validateDatabaseCoonnectionService;
