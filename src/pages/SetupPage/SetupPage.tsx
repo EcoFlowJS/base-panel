@@ -11,7 +11,6 @@ import { ISetupValues } from "./SetupValues.interfaace";
 import validator from "./validatror";
 import { useNotification } from "@eco-flow/components-lib";
 import Finish from "../../components/Steps/Finish/Finish.component";
-import { connectSocketIO } from "../../utils/socket.io/socket.io";
 import processSetup from "../../service/setup/processSetup";
 import { ApiResponse } from "@eco-flow/types";
 import { useAtom } from "jotai";
@@ -221,5 +220,3 @@ export default function SetupPage() {
     </div>
   );
 }
-
-// onSubmit={() => ImportFile(formData.uploader)}

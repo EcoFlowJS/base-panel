@@ -35,8 +35,10 @@ const processSetup = async (values: ISetupValues): Promise<ApiResponse> => {
       userInfo: values.userInfo,
       databaseInfo: values.database,
     };
-    console.log((await axios.post("setup/blank", setupBlank)).data);
+    return (await axios.post("setup/blank", setupBlank)).data;
   }
+
+  //TODO:Create project from template
 
   return {};
 };

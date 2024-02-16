@@ -1,21 +1,28 @@
 import { Outlet } from "react-router-dom";
-import initService from "../../service/init/init.service";
+import { initService } from "../../service/init/init.service";
 import redirect from "../../utils/redirect/redirect";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import initStatusState from "../../store/initStatusState.store";
+import Loading from "../../components/Loading/Loading.component";
 
 export default function BaseLayout() {
-  const status = initService();
   const re = redirect();
-  const [_initStatus, setinitStatus] = useAtom(initStatusState);
+  const [isLoading, setLoading] = useState(true);
+  const [initStatus, setinitStatus] = useAtom(initStatusState);
 
   useEffect(() => {
-    setinitStatus({ ...status });
-    if (status.isNew && !status.isLoggedIn) re("setup");
-    if (!status.isNew && !status.isLoggedIn) re("login");
-    if (!status.isNew && status.isLoggedIn) re("dashboard");
+    initService().then((status) => {
+      setinitStatus({ ...status });
+      setLoading(false);
+    });
   }, []);
 
-  return <Outlet />;
+  useEffect(() => {
+    if (initStatus.isNew && !initStatus.isLoggedIn) re("setup");
+    if (!initStatus.isNew && !initStatus.isLoggedIn) re("login");
+    if (!initStatus.isNew && initStatus.isLoggedIn) re("dashboard");
+  }, [initStatus]);
+
+  return <>{isLoading ? <Loading /> : <Outlet />}</>;
 }

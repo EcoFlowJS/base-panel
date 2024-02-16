@@ -1,11 +1,10 @@
-import { Suspense, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import Routes from "./routes/routes";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback/ErrorFallback.componennt";
 import { CustomProvider, Loader } from "rsuite";
 import themeMode from "./store/theme.mode";
 import { useAtom } from "jotai";
-import Loading from "./components/Loading/Loading.component";
 import { isClosedServer, isRestartingServer } from "./store/server.store";
 import isServerOnline from "./service/server/isServerOnline.service";
 
@@ -28,11 +27,9 @@ export default function App() {
           {typeof restartingServer === "boolean" && restartingServer ? (
             <Loader backdrop content="loading..." />
           ) : (
-            <Suspense fallback={<Loading />}>
-              <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <Routes />
-              </ErrorBoundary>
-            </Suspense>
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+              <Routes />
+            </ErrorBoundary>
           )}
         </CustomProvider>
       )}
