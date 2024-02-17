@@ -1,17 +1,10 @@
 import { Error404 } from "@eco-flow/components-lib";
 import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-const BaseLayout = lazy(() => import("../layout/BaseLayout/BaseLayout.layout"));
-const SetupLayout = lazy(
-  () => import("../layout/SetupLayout/SetupLayout.layout")
-);
-const LoginLayout = lazy(
-  () => import("../layout/LoginLayout/LoginLayout.layout")
-);
-const DashboardLayout = lazy(
-  () => import("../layout/DasboardLayout/DashboardLayout.layout")
-);
+import LoginLayout from "../layout/LoginLayout/LoginLayout.layout";
+import SetupLayout from "../layout/SetupLayout/SetupLayout.layout";
+import BaseLayout from "../layout/BaseLayout/BaseLayout.layout";
+import DashboardLayout from "../layout/DasboardLayout/DashboardLayout.layout";
 
 export default () => {
   return (
