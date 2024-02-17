@@ -1,5 +1,6 @@
 import { ApiResponse } from "@eco-flow/types";
 import { LoignUserInterface } from "./LoignUserInterface";
+import userLoginService from "../../../service/user/userLogin.service";
 
 const submitHandler = (
   _checkStatus: boolean,
@@ -66,6 +67,8 @@ const submitHandler = (
     });
     return;
   }
+
+  userLoginService(username, password).then(setResponse);
 };
 
 export default submitHandler;

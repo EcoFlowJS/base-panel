@@ -11,6 +11,9 @@ import submitHandler from "./submitHandler";
 import "./style.less";
 import { LoignUserInterface } from "./LoignUserInterface";
 import { ApiResponse } from "@eco-flow/types";
+import initStatusState from "../../../store/initStatusState.store";
+import { useAtom } from "jotai";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPanel() {
   const [isPasswordShow, setPasswordShow] = useState(false);
@@ -18,7 +21,9 @@ export default function LoginPanel() {
     username: "",
     password: "",
   });
+  const [isProcessing, setProcessing] = useState(false);
   const [response, setResponse] = useState<ApiResponse>({});
+  const [initStatus, setinitStatus] = useAtom(initStatusState);
 
   const errorResponse = useNotification({
     header: "Sign in error",
@@ -27,10 +32,10 @@ export default function LoginPanel() {
   });
 
   useEffect(() => {
-    console.log(response);
-    if (response.error) {
-      errorResponse.show();
-    }
+    setProcessing(false);
+    if (response.error) errorResponse.show();
+
+    if (response.success) setinitStatus({ ...initStatus, isLoggedIn: true });
   }, [response]);
 
   return (
@@ -51,13 +56,15 @@ export default function LoginPanel() {
           <Form
             formValue={formValue}
             formDefaultValue={formValue}
-            onSubmit={(checkStatus, event) =>
-              submitHandler(checkStatus, event, formValue, setResponse)
-            }
+            onSubmit={(checkStatus, event) => {
+              setProcessing(true);
+              submitHandler(checkStatus, event, formValue, setResponse);
+            }}
           >
             <Form.Group>
               <InputGroupWrapper icon={FaRegUser}>
                 <Input
+                  disabled={isProcessing}
                   name="username"
                   placeholder="Username"
                   onChange={(value) =>
@@ -77,6 +84,7 @@ export default function LoginPanel() {
                 }}
               >
                 <Input
+                  disabled={isProcessing}
                   name="password"
                   type={isPasswordShow ? "text" : "password"}
                   placeholder="Password"
@@ -89,7 +97,13 @@ export default function LoginPanel() {
               </InputGroupWrapper>
             </Form.Group>
             <Form.Group>
-              <Button type="submit" style={{ width: 290 }} appearance="primary">
+              <Button
+                disabled={isProcessing}
+                loading={isProcessing}
+                type="submit"
+                style={{ width: 290 }}
+                appearance="primary"
+              >
                 Sign in
               </Button>
             </Form.Group>

@@ -10,12 +10,7 @@ export default function LoginPage() {
           justify="center"
           align="middle"
           style={{
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
+            paddingTop: "15%",
           }}
         >
           <FlexboxGrid.Item>
