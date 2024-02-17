@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, FlexboxGrid, Form, Input, InputGroup, Panel } from "rsuite";
+import { useEffect, useState } from "react";
+import { Button, FlexboxGrid, Form, Input, Panel } from "rsuite";
 import { GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
 import { IconWrapper, useNotification } from "@eco-flow/components-lib";
@@ -11,9 +11,10 @@ import submitHandler from "./submitHandler";
 import "./style.less";
 import { LoignUserInterface } from "./LoignUserInterface";
 import { ApiResponse } from "@eco-flow/types";
-import initStatusState from "../../../store/initStatusState.store";
+import initStatusState, {
+  isLoggedIn,
+} from "../../../store/initStatusState.store";
 import { useAtom } from "jotai";
-import { useNavigate } from "react-router-dom";
 
 export default function LoginPanel() {
   const [isPasswordShow, setPasswordShow] = useState(false);
@@ -24,6 +25,7 @@ export default function LoginPanel() {
   const [isProcessing, setProcessing] = useState(false);
   const [response, setResponse] = useState<ApiResponse>({});
   const [initStatus, setinitStatus] = useAtom(initStatusState);
+  const [_loggedIn, setLoggedIn] = useAtom(isLoggedIn);
 
   const errorResponse = useNotification({
     header: "Sign in error",
@@ -35,12 +37,15 @@ export default function LoginPanel() {
     setProcessing(false);
     if (response.error) errorResponse.show();
 
-    if (response.success) setinitStatus({ ...initStatus, isLoggedIn: true });
+    if (response.success) {
+      setinitStatus({ ...initStatus, isLoggedIn: true });
+      setLoggedIn(true);
+    }
   }, [response]);
 
   return (
     <>
-      <Panel shaded bordered style={{ minWidth: 450, paddingTop: "1rem" }}>
+      <Panel shaded bordered style={{ minWidth: 450, height: "min-content" }}>
         <div className="adminIcon">
           <p>
             <IconWrapper icon={GrUserManager} />

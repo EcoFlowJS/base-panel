@@ -4,6 +4,7 @@ import redirect from "../../utils/redirect/redirect";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import initStatusState, {
+  isLoggedIn,
   isLoggedOut,
 } from "../../store/initStatusState.store";
 import Loading from "../../components/Loading/Loading.component";
@@ -13,6 +14,7 @@ export default function BaseLayout() {
   const [isLoading, setLoading] = useState(true);
   const [initStatus, setinitStatus] = useAtom(initStatusState);
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
+  const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
 
   useEffect(() => {
     initService().then((status) => {
@@ -33,6 +35,13 @@ export default function BaseLayout() {
       setinitStatus({ ...initStatus, isLoggedIn: false });
     }
   }, [loggedOut]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      setLoggedIn(false);
+      setinitStatus({ ...initStatus, isLoggedIn: true });
+    }
+  }, [loggedIn]);
 
   return <>{isLoading ? <Loading /> : <Outlet />}</>;
 }
