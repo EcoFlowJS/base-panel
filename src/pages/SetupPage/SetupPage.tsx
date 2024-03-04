@@ -9,19 +9,22 @@ import FromTemplate from "../../components/Steps/FromTemplate/FromTemplate.compo
 import defaultValues from "./defaultValues";
 import { ISetupValues } from "./SetupValues.interfaace";
 import validator from "./validatror";
-import { useNotification } from "@eco-flow/components-lib";
 import Finish from "../../components/Steps/Finish/Finish.component";
 import processSetup from "../../service/setup/processSetup";
 import { ApiResponse } from "@eco-flow/types";
 import { useAtom } from "jotai";
 import { isClosedServer, isRestartingServer } from "../../store/server.store";
 import isServerOnline from "../../service/server/isServerOnline.service";
+import {
+  errorNotification,
+  successNotification,
+} from "../../store/notification.store";
 
 export default function SetupPage() {
   const [step, setStep] = React.useState(0);
   const [value, setValue] = React.useState<ISetupValues>(defaultValues);
   const [error, setError] = React.useState<{
-    errorHeader?: String;
+    errorHeader?: string;
     errorMessage?: string;
   }>({});
   const [loadingDatabaseConfig, setLoadingDatabaseConfig] =
@@ -32,17 +35,46 @@ export default function SetupPage() {
   const [_restartingServer, setRestartingServer] = useAtom(isRestartingServer);
   const [_clsoeServer, setCloseServer] = useAtom(isClosedServer);
 
+  const setSuccessNotification = useAtom(successNotification)[1];
+  const setErrorNotification = useAtom(errorNotification)[1];
+
   useEffect(() => {
-    if (error.errorMessage) errorStepNotification.show();
+    if (error.errorMessage)
+      setErrorNotification({
+        show: true,
+        header: error.errorHeader,
+        message: error.errorMessage,
+      });
   }, [error]);
 
   useEffect(() => {
     if (response.error) {
       setProcessingStep(false);
-      errorProcessNotification.show();
+      setErrorNotification({
+        show: true,
+        header: "Error while processing your request",
+        message: response.payload,
+      });
     }
     if (response.success) {
-      successProcessNotification.show();
+      setSuccessNotification({
+        show: true,
+        header: "Successful",
+        message: response.success
+          ? Array.isArray(response.payload)
+            ? response.payload.map((val, key) => {
+                return (
+                  <div key={key}>
+                    {val}
+                    <br />
+                  </div>
+                );
+              })
+            : typeof response.payload === "object"
+            ? response.payload.msg
+            : response.payload
+          : "",
+      });
       setProcessingStep(true);
       if (response.payload.restart)
         setTimeout(
@@ -63,44 +95,6 @@ export default function SetupPage() {
         : nextStep
     );
   };
-
-  const errorStepNotification = useNotification({
-    header: error.errorHeader ? error.errorHeader : "",
-    type: "error",
-    placement: "topEnd",
-    children: <>{error.errorMessage ? error.errorMessage : ""}</>,
-  });
-
-  const errorProcessNotification = useNotification({
-    header: "Error while processing your request",
-    type: "error",
-    placement: "topEnd",
-    children: <>{response.error ? response.payload : ""}</>,
-  });
-
-  const successProcessNotification = useNotification({
-    header: "Successful",
-    type: "success",
-    placement: "topEnd",
-    children: (
-      <>
-        {response.success
-          ? Array.isArray(response.payload)
-            ? response.payload.map((val, key) => {
-                return (
-                  <div key={key}>
-                    {val}
-                    <br />
-                  </div>
-                );
-              })
-            : typeof response.payload === "object"
-            ? response.payload.msg
-            : response.payload
-          : ""}
-      </>
-    ),
-  });
 
   const onNext = () =>
     validator(step, value, setError, stepChange, setLoadingDatabaseConfig);

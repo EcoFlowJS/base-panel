@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, FlexboxGrid, Form, Input, Panel } from "rsuite";
 import { GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
-import { IconWrapper, useNotification } from "@eco-flow/components-lib";
+import { IconWrapper } from "@eco-flow/components-lib";
 import EyeIcon from "@rsuite/icons/legacy/Eye";
 import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 import InputGroupWrapper from "./InputGroupWrapper";
@@ -15,6 +15,7 @@ import initStatusState, {
   isLoggedIn,
 } from "../../../store/initStatusState.store";
 import { useAtom } from "jotai";
+import { errorNotification } from "../../../store/notification.store";
 
 export default function LoginPanel() {
   const [isPasswordShow, setPasswordShow] = useState(false);
@@ -27,15 +28,16 @@ export default function LoginPanel() {
   const [initStatus, setinitStatus] = useAtom(initStatusState);
   const [_loggedIn, setLoggedIn] = useAtom(isLoggedIn);
 
-  const errorResponse = useNotification({
-    header: "Sign in error",
-    type: "error",
-    children: <>{response.error ? response.payload : <></>}</>,
-  });
+  const setErrorNotification = useAtom(errorNotification)[1];
 
   useEffect(() => {
     setProcessing(false);
-    if (response.error) errorResponse.show();
+    if (response.error)
+      setErrorNotification({
+        show: true,
+        header: "Sign in error",
+        message: response.payload,
+      });
 
     if (response.success) {
       setinitStatus({ ...initStatus, isLoggedIn: true });

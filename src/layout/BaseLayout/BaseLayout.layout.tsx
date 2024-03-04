@@ -8,6 +8,11 @@ import initStatusState, {
   isLoggedOut,
 } from "../../store/initStatusState.store";
 import Loading from "../../components/Loading/Loading.component";
+import {
+  errorNotification,
+  successNotification,
+} from "../../store/notification.store";
+import { useNotification } from "@eco-flow/components-lib";
 
 export default function BaseLayout() {
   const re = redirect();
@@ -16,12 +21,70 @@ export default function BaseLayout() {
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
 
+  const [successNotificationMessage, setSuccessNotificationMessage] =
+    useAtom(successNotification);
+  const [errorNotificationMessage, setErrorNotificationMessage] =
+    useAtom(errorNotification);
+
+  const errorNoti = useNotification({
+    type: "error",
+    header: (
+      <>
+        {errorNotificationMessage.header ? errorNotificationMessage.header : ""}
+      </>
+    ),
+    placement: errorNotificationMessage.placement,
+    children: (
+      <>
+        {errorNotificationMessage.message
+          ? errorNotificationMessage.message
+          : ""}
+      </>
+    ),
+  });
+
+  const successNoti = useNotification({
+    type: "success",
+    header: (
+      <>
+        {successNotificationMessage.header
+          ? successNotificationMessage.header
+          : ""}
+      </>
+    ),
+    placement: successNotificationMessage.placement,
+    children: (
+      <>
+        {successNotificationMessage.message
+          ? successNotificationMessage.message
+          : ""}
+      </>
+    ),
+  });
+
   useEffect(() => {
     initService().then((status) => {
       setinitStatus({ ...status });
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (successNotificationMessage.show) {
+      setSuccessNotificationMessage({
+        ...successNotificationMessage,
+        show: false,
+      });
+      successNoti.show();
+    }
+  }, [successNotificationMessage]);
+
+  useEffect(() => {
+    if (errorNotificationMessage.show) {
+      setErrorNotificationMessage({ ...errorNotificationMessage, show: false });
+      errorNoti.show();
+    }
+  }, [errorNotificationMessage]);
 
   useEffect(() => {
     if (initStatus.isNew && !initStatus.isLoggedIn) re("setup");

@@ -15,7 +15,7 @@ const validator = (
   value: ISetupValues,
   setError: React.Dispatch<
     React.SetStateAction<{
-      errorHeader?: String | undefined;
+      errorHeader?: string | undefined;
       errorMessage?: string | undefined;
     }>
   >,
