@@ -1,8 +1,9 @@
-import { Button, ButtonToolbar, Input, Panel } from "rsuite";
+import { Input, Panel } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
 import { Form, FormGroup, InputPassword } from "@eco-flow/components-lib";
 import { useLayoutEffect } from "react";
 import defaultUsers from "./defaultDetails";
+import "./style.less";
 
 interface UserCreationProps {
   defaultvalue?: typeof defaultUsers;
@@ -61,7 +62,6 @@ export default function UserCreation({
             autoComplete="off"
             placeholder="Password"
             accepter={InputPassword}
-            style={{ width: 300 }}
           />
           <FormGroup
             name="email"
