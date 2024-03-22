@@ -112,6 +112,7 @@ export default function BaseLayout() {
       baseSocketIOHndlers(socket, initStatus.userID!).onRoleUpdate((value) =>
         setUserPermissions({ ...defaultPermissions, ...value })
       );
+
       fetchUserPermissions(initStatus.userID!, "Permissions").then(
         (response) => {
           if (response.success) {

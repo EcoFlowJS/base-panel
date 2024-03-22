@@ -40,7 +40,11 @@ export default function LoginPanel() {
       });
 
     if (response.success) {
-      setinitStatus({ ...initStatus, isLoggedIn: true });
+      setinitStatus({
+        ...initStatus,
+        isLoggedIn: true,
+        userID: formValue.username,
+      });
       setLoggedIn(true);
     }
   }, [response]);

@@ -13,8 +13,6 @@ import { useEffect } from "react";
 export default function DashboardContents() {
   const [permissions] = useAtom(userPermissions);
 
-  useEffect(() => console.log(permissions), [permissions]);
-
   return (
     <FlexboxGrid
       justify="center"
