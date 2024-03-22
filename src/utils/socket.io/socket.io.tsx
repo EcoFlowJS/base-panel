@@ -2,9 +2,17 @@ import { Socket, io } from "socket.io-client";
 
 const baseUrl = "http://localhost:4000/";
 
-const connectSocketIO = (): Socket =>
-  io(baseUrl, { path: "/socket.ecoflow" }).connect();
+const connectSocketIO = (roomID?: string[] | string): Socket => {
+  const socket = io(baseUrl, { path: "/socket.ecoflow" });
+  socket.on("connect", () => {
+    if (roomID) socket.emit("join", roomID);
+  });
 
-const disconnectSocketIO = (socket: Socket): Socket => socket.disconnect();
+  return socket;
+};
+
+const disconnectSocketIO = (socket: Socket): void => {
+  if (socket.connected) socket.disconnect();
+};
 
 export { connectSocketIO, disconnectSocketIO };

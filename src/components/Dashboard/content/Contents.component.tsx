@@ -6,8 +6,15 @@ import { TbBinaryTree2 } from "react-icons/tb";
 import styles from "./style";
 import Button from "./button/Button";
 import { Link } from "react-router-dom";
+import { useAtom } from "jotai";
+import { userPermissions } from "../../../store/users.store";
+import { useEffect } from "react";
 
 export default function DashboardContents() {
+  const [permissions] = useAtom(userPermissions);
+
+  useEffect(() => console.log(permissions), [permissions]);
+
   return (
     <FlexboxGrid
       justify="center"
@@ -22,35 +29,34 @@ export default function DashboardContents() {
       </FlexboxGrid.Item>
       <FlexboxGrid.Item>
         <Stack spacing={20} style={{ paddingTop: "6rem" }}>
-          <Link to={{ pathname: "/admin" }} target="_parent">
-            <Button
-              appearance="primary"
-              icon={<RiAdminLine />}
-              labletext="Admin Panel"
-              style={styles.IconButton}
-              circle
-            />
-          </Link>
-          <Link to={{ pathname: "/editor/schema" }} target="_blank">
-            <Button
-              color="orange"
-              appearance="primary"
-              icon={<BsDatabaseFill />}
-              labletext="Schema Panel"
-              style={styles.IconButton}
-              circle
-            />
-          </Link>
-          <Link to={{ pathname: "/editor/flow" }} target="_blank">
-            <Button
-              color="yellow"
-              appearance="primary"
-              icon={<TbBinaryTree2 />}
-              style={{ ...styles.IconButton, rotate: "-90deg" }}
-              circle
-              labletext="Flow Panel"
-            />
-          </Link>
+          <Button
+            appearance="primary"
+            icon={<RiAdminLine />}
+            labletext="Admin Panel"
+            style={styles.IconButton}
+            circle
+            linkProps={{ to: { pathname: "/admin" }, target: "_parent" }}
+          />
+          <Button
+            color="orange"
+            appearance="primary"
+            icon={<BsDatabaseFill />}
+            labletext="Schema Panel"
+            style={styles.IconButton}
+            circle
+            linkProps={{ to: { pathname: "/editor/schema" }, target: "_blank" }}
+            disabled={!permissions.administrator && !permissions.schemaEditor}
+          />
+          <Button
+            color="yellow"
+            appearance="primary"
+            icon={<TbBinaryTree2 />}
+            style={{ ...styles.IconButton, rotate: "-90deg" }}
+            circle
+            labletext="Flow Panel"
+            linkProps={{ to: { pathname: "/editor/flow" }, target: "_blank" }}
+            disabled={!permissions.administrator && !permissions.flowEditor}
+          />
         </Stack>
       </FlexboxGrid.Item>
     </FlexboxGrid>

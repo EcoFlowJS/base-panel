@@ -1,26 +1,65 @@
 import { FlexboxGrid, IconButton, IconButtonProps } from "rsuite";
-import styles from "../style";
+import { Link, LinkProps } from "react-router-dom";
 
 interface DashboardButtonProps extends IconButtonProps {
   labletext?: string;
+  linkProps?: LinkProps;
 }
 
-export default function Button(contents: DashboardButtonProps) {
-  const { labletext } = contents;
+export default function Button({
+  labletext,
+  disabled,
+  linkProps = {
+    to: "",
+  },
+  ...props
+}: DashboardButtonProps) {
   return (
-    <FlexboxGrid
-      justify="center"
-      align="middle"
-      style={styles.FlexBoxDirection}
-    >
-      <FlexboxGrid.Item>
-        <IconButton {...contents} />
-      </FlexboxGrid.Item>
-      <FlexboxGrid.Item style={{ padding: "1rem" }}>
-        <strong>
-          <span>{labletext}</span>
-        </strong>
-      </FlexboxGrid.Item>
-    </FlexboxGrid>
+    <>
+      {disabled ? (
+        <FlexboxGrid
+          justify="center"
+          align="middle"
+          style={{
+            flexDirection: "column",
+            cursor: disabled ? "not-allowed" : "pointer",
+          }}
+        >
+          <FlexboxGrid.Item>
+            <IconButton {...props} disabled={disabled} />
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item style={{ padding: "1rem" }}>
+            <strong>
+              <span>{labletext}</span>
+            </strong>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+      ) : (
+        <Link {...linkProps}>
+          <FlexboxGrid
+            justify="center"
+            align="middle"
+            style={{
+              flexDirection: "column",
+              cursor: disabled ? "not-allowed" : "pointer",
+            }}
+          >
+            <FlexboxGrid.Item>
+              <IconButton {...props} disabled={disabled} />
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item
+              style={{
+                padding: "1rem",
+                cursor: disabled ? "not-allowed" : "pointer",
+              }}
+            >
+              <strong>
+                <span>{labletext}</span>
+              </strong>
+            </FlexboxGrid.Item>
+          </FlexboxGrid>
+        </Link>
+      )}
+    </>
   );
 }

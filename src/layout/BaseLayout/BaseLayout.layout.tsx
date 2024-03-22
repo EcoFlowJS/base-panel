@@ -13,6 +13,13 @@ import {
   successNotification,
 } from "../../store/notification.store";
 import { useNotification } from "@eco-flow/components-lib";
+import { connectSocketIO } from "../../utils/socket.io/socket.io";
+import baseSocketIOHndlers from "./baseSocketIO.handlers";
+import { userPermissions } from "../../store/users.store";
+import defaultPermissions from "../../defaults/defaultPermissions.default";
+import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";
+
+const socket = connectSocketIO(["roles", "users", "setup"]);
 
 export default function BaseLayout() {
   const re = redirect();
@@ -20,6 +27,11 @@ export default function BaseLayout() {
   const [initStatus, setinitStatus] = useAtom(initStatusState);
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
+
+  const [isDisConnectedAfterConnect, setIsDisConnectedAfterConnect] =
+    useState(false);
+  const setUserPermissions = useAtom(userPermissions)[1];
+  socket.on("connect", () => setIsDisConnectedAfterConnect(true));
 
   const [successNotificationMessage, setSuccessNotificationMessage] =
     useAtom(successNotification);
@@ -89,7 +101,23 @@ export default function BaseLayout() {
   useEffect(() => {
     if (initStatus.isNew && !initStatus.isLoggedIn) re("setup");
     if (!initStatus.isNew && !initStatus.isLoggedIn) re("login");
-    if (!initStatus.isNew && initStatus.isLoggedIn) re("dashboard");
+    if (!initStatus.isNew && initStatus.isLoggedIn) {
+      re("dashboard");
+      if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
+      baseSocketIOHndlers(socket, initStatus.userID!).onRoleUpdate((value) =>
+        setUserPermissions({ ...defaultPermissions, ...value })
+      );
+      fetchUserPermissions(initStatus.userID!, "Permissions").then(
+        (response) => {
+          if (response.success) {
+            setUserPermissions({
+              ...defaultPermissions,
+              ...response.payload.permissions,
+            });
+          }
+        }
+      );
+    }
   }, [initStatus]);
 
   useEffect(() => {
