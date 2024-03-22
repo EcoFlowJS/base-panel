@@ -13,7 +13,10 @@ import {
   successNotification,
 } from "../../store/notification.store";
 import { useNotification } from "@eco-flow/components-lib";
-import { connectSocketIO } from "../../utils/socket.io/socket.io";
+import {
+  connectSocketIO,
+  disconnectSocketIO,
+} from "../../utils/socket.io/socket.io";
 import baseSocketIOHndlers from "./baseSocketIO.handlers";
 import { userPermissions } from "../../store/users.store";
 import defaultPermissions from "../../defaults/defaultPermissions.default";
@@ -79,6 +82,8 @@ export default function BaseLayout() {
       setinitStatus({ ...status });
       setLoading(false);
     });
+
+    return disconnectSocketIO(socket);
   }, []);
 
   useEffect(() => {
