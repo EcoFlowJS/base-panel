@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, FlexboxGrid, Form, Input, Panel } from "rsuite";
-import { GrUserManager } from "react-icons/gr";
+import { GrLogin, GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
 import { IconWrapper } from "@eco-flow/components-lib";
 import EyeIcon from "@rsuite/icons/legacy/Eye";
@@ -114,6 +114,7 @@ export default function LoginPanel() {
                 type="submit"
                 style={{ width: 290 }}
                 appearance="primary"
+                endIcon={<IconWrapper icon={GrLogin} />}
               >
                 Sign in
               </Button>
