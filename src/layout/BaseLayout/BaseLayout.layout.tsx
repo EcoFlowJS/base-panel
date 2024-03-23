@@ -113,16 +113,14 @@ export default function BaseLayout() {
         setUserPermissions({ ...defaultPermissions, ...value })
       );
 
-      fetchUserPermissions(initStatus.userID!, "Permissions").then(
-        (response) => {
-          if (response.success) {
-            setUserPermissions({
-              ...defaultPermissions,
-              ...response.payload.permissions,
-            });
-          }
+      fetchUserPermissions("Permissions").then((response) => {
+        if (response.success) {
+          setUserPermissions({
+            ...defaultPermissions,
+            ...response.payload.permissions,
+          });
         }
-      );
+      });
     }
   }, [initStatus]);
 
