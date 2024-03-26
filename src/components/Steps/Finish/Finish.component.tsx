@@ -33,9 +33,7 @@ export default function Finish({ value, onResponse = () => {} }: FinishProps) {
 
     IO.on("importFileSetup", onResponse);
 
-    return () => {
-      disconnectSocketIO(IO);
-    };
+    return disconnectSocketIO(IO);
   }, []);
 
   useEffect(() => {

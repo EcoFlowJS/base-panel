@@ -13,16 +13,16 @@ import {
   successNotification,
 } from "../../store/notification.store";
 import { useNotification } from "@eco-flow/components-lib";
+import { userPermissions } from "../../store/users.store";
+import defaultPermissions from "../../defaults/defaultPermissions.default";
+import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";
+import { Socket } from "socket.io-client";
 import {
   connectSocketIO,
   disconnectSocketIO,
 } from "../../utils/socket.io/socket.io";
 import baseSocketIOHndlers from "./baseSocketIO.handlers";
-import { userPermissions } from "../../store/users.store";
-import defaultPermissions from "../../defaults/defaultPermissions.default";
-import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";
-
-const socket = connectSocketIO(["roles", "users", "setup"]);
+import userSignoutService from "../../service/user/userSignout.service";
 
 export default function BaseLayout() {
   const re = redirect();
@@ -30,16 +30,16 @@ export default function BaseLayout() {
   const [initStatus, setinitStatus] = useAtom(initStatusState);
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
+  const [isSocketConnected, setSocketConnected] = useState(false);
 
-  const [isDisConnectedAfterConnect, setIsDisConnectedAfterConnect] =
-    useState(false);
   const setUserPermissions = useAtom(userPermissions)[1];
-  socket.on("connect", () => setIsDisConnectedAfterConnect(true));
 
   const [successNotificationMessage, setSuccessNotificationMessage] =
     useAtom(successNotification);
   const [errorNotificationMessage, setErrorNotificationMessage] =
     useAtom(errorNotification);
+
+  let socket: Socket | null = null;
 
   const errorNoti = useNotification({
     type: "error",
@@ -77,13 +77,16 @@ export default function BaseLayout() {
     ),
   });
 
+  //initial state change
   useEffect(() => {
     initService().then((status) => {
       setinitStatus({ ...status });
       setLoading(false);
     });
 
-    return disconnectSocketIO(socket);
+    return () => {
+      if (isSocketConnected && socket !== null) disconnectSocketIO(socket)();
+    };
   }, []);
 
   useEffect(() => {
@@ -103,15 +106,12 @@ export default function BaseLayout() {
     }
   }, [errorNotificationMessage]);
 
+  //setting up user status
   useEffect(() => {
     if (initStatus.isNew && !initStatus.isLoggedIn) re("setup");
     if (!initStatus.isNew && !initStatus.isLoggedIn) re("login");
     if (!initStatus.isNew && initStatus.isLoggedIn) {
       re("dashboard");
-      if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
-      baseSocketIOHndlers(socket, initStatus.userID!).onRoleUpdate((value) =>
-        setUserPermissions({ ...defaultPermissions, ...value })
-      );
 
       fetchUserPermissions("Permissions").then((response) => {
         if (response.success) {
@@ -124,6 +124,7 @@ export default function BaseLayout() {
     }
   }, [initStatus]);
 
+  //Logout state change
   useEffect(() => {
     if (loggedOut) {
       setLoggedOut(false);
@@ -131,12 +132,45 @@ export default function BaseLayout() {
     }
   }, [loggedOut]);
 
+  //Login state chnage
   useEffect(() => {
     if (loggedIn) {
       setLoggedIn(false);
       setinitStatus({ ...initStatus, isLoggedIn: true });
     }
   }, [loggedIn]);
+
+  //socket connection and disconnect
+  useEffect(() => {
+    if (
+      !isLoading &&
+      !initStatus.isNew &&
+      initStatus.isLoggedIn &&
+      socket === null
+    ) {
+      socket = socket !== null ? socket : connectSocketIO(initStatus.userID);
+      socket.on("connect", () => setSocketConnected(true));
+      socket.on("disconnect", () => setSocketConnected(false));
+      baseSocketIOHndlers(socket, initStatus.userID!).onRoleUpdate(
+        ({ isActiveUser, roles }) => {
+          if (!isActiveUser) {
+            setinitStatus({ ...initStatus, isLoggedIn: false });
+            userSignoutService().then(() => {
+              if (socket !== null) {
+                disconnectSocketIO(socket)();
+                socket = null;
+              }
+            });
+            return;
+          }
+          setUserPermissions({ ...defaultPermissions, ...roles });
+        }
+      );
+      return;
+    }
+
+    if (socket !== null) disconnectSocketIO(socket)();
+  }, [initStatus]);
 
   return <>{isLoading ? <Loading /> : <Outlet />}</>;
 }

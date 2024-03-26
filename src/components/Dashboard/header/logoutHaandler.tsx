@@ -1,7 +1,7 @@
-import userLougoutService from "../../../service/user/userLogout.service";
+import userSignoutService from "../../../service/user/userSignout.service";
 
 const logoutHandler = (setLogout: any) => {
-  userLougoutService().then((response) => {
+  userSignoutService().then((response) => {
     if (response.success) setLogout(true);
   });
 };
