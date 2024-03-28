@@ -33,6 +33,7 @@ export default function BaseLayout() {
   const [isSocketConnected, setSocketConnected] = useState(false);
 
   const setUserPermissions = useAtom(userPermissions)[1];
+  const [isPermissionsFetched, setPermissionsFetched] = useState(false);
 
   const [successNotificationMessage, setSuccessNotificationMessage] =
     useAtom(successNotification);
@@ -115,6 +116,7 @@ export default function BaseLayout() {
 
       fetchUserPermissions("Permissions").then((response) => {
         if (response.success) {
+          setPermissionsFetched(true);
           setUserPermissions({
             ...defaultPermissions,
             ...response.payload.permissions,
@@ -172,5 +174,5 @@ export default function BaseLayout() {
     if (socket !== null) disconnectSocketIO(socket)();
   }, [initStatus]);
 
-  return <>{isLoading ? <Loading /> : <Outlet />}</>;
+  return <>{isLoading || !isPermissionsFetched ? <Loading /> : <Outlet />}</>;
 }

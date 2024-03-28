@@ -1,6 +1,13 @@
 import { useAtom } from "jotai";
 import { CiDark, CiLight } from "react-icons/ci";
-import { Divider, FlexboxGrid, IconButton, Panel } from "rsuite";
+import {
+  Divider,
+  FlexboxGrid,
+  IconButton,
+  Panel,
+  Tooltip,
+  Whisper,
+} from "rsuite";
 import themeMode from "../../../store/theme.mode";
 import { LuLogOut } from "react-icons/lu";
 import styles from "./style";
@@ -26,24 +33,34 @@ export default function DashboardHeader() {
               <span>Mode :</span>
             </FlexboxGrid.Item>
             <FlexboxGrid.Item>
-              <IconButton
-                appearance="link"
-                size="sm"
-                icon={darkMode ? <CiLight /> : <CiDark />}
-                onClick={toogleMode}
-                style={styles.ModeIcon}
-              />
+              <Whisper
+                placement="bottom"
+                speaker={<Tooltip arrow={false}>Toggle Theme</Tooltip>}
+              >
+                <IconButton
+                  appearance="link"
+                  size="sm"
+                  icon={darkMode ? <CiLight /> : <CiDark />}
+                  onClick={toogleMode}
+                  style={styles.ModeIcon}
+                />
+              </Whisper>
             </FlexboxGrid.Item>
             {initStatus.isAuth ? (
               <FlexboxGrid.Item>
                 <Divider vertical />
-                <IconButton
-                  appearance="link"
-                  title="logout"
-                  icon={<IconWrapper icon={LuLogOut} />}
-                  style={styles.LogoutIcon}
-                  onClick={() => logoutHandler(setLogOut)}
-                />
+                <Whisper
+                  placement="bottom"
+                  speaker={<Tooltip arrow={false}>Sign out</Tooltip>}
+                >
+                  <IconButton
+                    appearance="link"
+                    title="logout"
+                    icon={<IconWrapper icon={LuLogOut} />}
+                    style={styles.LogoutIcon}
+                    onClick={() => logoutHandler(setLogOut)}
+                  />
+                </Whisper>
               </FlexboxGrid.Item>
             ) : (
               <></>
