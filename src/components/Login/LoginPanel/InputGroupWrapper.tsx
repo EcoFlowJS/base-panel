@@ -15,7 +15,6 @@ export default function InputGroupWrapper({
   icon,
   children,
   isPassword,
-  ...props
 }: InputGroupWrapperProps) {
   return (
     <InputGroup inside style={{ width: 290 }}>

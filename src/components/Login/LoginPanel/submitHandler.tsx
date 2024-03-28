@@ -9,32 +9,20 @@ const submitHandler = (
   setResponse: React.Dispatch<React.SetStateAction<ApiResponse>>
 ) => {
   event.preventDefault();
-  let status = true;
   let isUsername = false;
   let isPassword = false;
   let isPasswordLength = false;
   let isPasswordRegex = false;
   const { username, password } = formValue;
 
-  if (username.trim().length === 0) {
-    status = false;
-    isUsername = true;
-  }
+  if (username.trim().length === 0) isUsername = true;
 
-  if (password.length === 0) {
-    status = false;
-    isPassword = true;
-  }
+  if (password.length === 0) isPassword = true;
 
-  if (password.length < 8) {
-    status = false;
-    isPasswordLength = true;
-  }
+  if (password.length < 8) isPasswordLength = true;
 
-  if (!/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)) {
-    status = false;
+  if (!/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password))
     isPasswordRegex = true;
-  }
 
   if (isUsername && isPassword) {
     setResponse({ error: true, payload: "Enter username and password." });

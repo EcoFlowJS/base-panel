@@ -5,10 +5,8 @@ import { BsDatabaseFill } from "react-icons/bs";
 import { TbBinaryTree2 } from "react-icons/tb";
 import styles from "./style";
 import Button from "./button/Button";
-import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { userPermissions } from "../../../store/users.store";
-import { useEffect } from "react";
 
 export default function DashboardContents() {
   const [permissions] = useAtom(userPermissions);

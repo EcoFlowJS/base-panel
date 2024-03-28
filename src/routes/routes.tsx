@@ -1,5 +1,4 @@
 import { Error404 } from "@eco-flow/components-lib";
-import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginLayout from "../layout/LoginLayout/LoginLayout.layout";
 import SetupLayout from "../layout/SetupLayout/SetupLayout.layout";
