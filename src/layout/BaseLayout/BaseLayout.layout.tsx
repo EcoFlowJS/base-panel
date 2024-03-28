@@ -174,5 +174,14 @@ export default function BaseLayout() {
     if (socket !== null) disconnectSocketIO(socket)();
   }, [initStatus]);
 
-  return <>{isLoading || !isPermissionsFetched ? <Loading /> : <Outlet />}</>;
+  return (
+    <>
+      {isLoading ||
+      (!initStatus.isNew && initStatus.isLoggedIn && !isPermissionsFetched) ? (
+        <Loading />
+      ) : (
+        <Outlet />
+      )}
+    </>
+  );
 }
