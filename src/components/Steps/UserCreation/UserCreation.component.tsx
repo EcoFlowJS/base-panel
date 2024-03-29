@@ -1,6 +1,6 @@
 import { Input, Panel } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
-import { Form, FormGroup, InputPassword } from "@eco-flow/components-lib";
+import { Form, FormGroup, InputPassword } from "@ecoflow/components-lib";
 import { useLayoutEffect } from "react";
 import defaultUsers from "./defaultDetails";
 import "./style.less";

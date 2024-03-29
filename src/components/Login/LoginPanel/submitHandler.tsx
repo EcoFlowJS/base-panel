@@ -1,4 +1,4 @@
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import { LoignUserInterface } from "./LoignUserInterface";
 import userLoginService from "../../../service/user/userLogin.service";
 

@@ -1,4 +1,4 @@
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import React from "react";
 import { InputGroup } from "rsuite";
 

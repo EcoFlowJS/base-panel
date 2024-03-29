@@ -6,7 +6,7 @@ import {
   FormGroup,
   InputEnv,
   InputPasswordEnv,
-} from "@eco-flow/components-lib";
+} from "@ecoflow/components-lib";
 import { DB_Config, DB_DriverList } from "./DB_DriverList";
 
 interface DatabaseSetupProps {

@@ -1,4 +1,4 @@
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import { ISetupValues } from "../../pages/SetupPage/SetupValues.interfaace";
 import axios from "../../utils/axios/axios";
 

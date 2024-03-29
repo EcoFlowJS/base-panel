@@ -11,7 +11,7 @@ import { ISetupValues } from "./SetupValues.interfaace";
 import validator from "./validatror";
 import Finish from "../../components/Steps/Finish/Finish.component";
 import processSetup from "../../service/setup/processSetup";
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import { useAtom } from "jotai";
 import { isClosedServer, isRestartingServer } from "../../store/server.store";
 import isServerOnline from "../../service/server/isServerOnline.service";

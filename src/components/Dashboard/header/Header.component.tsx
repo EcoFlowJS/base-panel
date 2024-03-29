@@ -14,7 +14,7 @@ import styles from "./style";
 import initStatusState, {
   isLoggedOut,
 } from "../../../store/initStatusState.store";
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import logoutHandler from "./logoutHaandler";
 
 export default function DashboardHeader() {

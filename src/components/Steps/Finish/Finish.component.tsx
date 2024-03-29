@@ -15,7 +15,7 @@ import {
   connectSocketIO,
   disconnectSocketIO,
 } from "../../../utils/socket.io/socket.io";
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 
 interface FinishProps {
   value?: ISetupValues;

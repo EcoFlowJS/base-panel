@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, FlexboxGrid, Form, Input, Panel } from "rsuite";
 import { GrLogin, GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import EyeIcon from "@rsuite/icons/legacy/Eye";
 import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 import InputGroupWrapper from "./InputGroupWrapper";
@@ -10,7 +10,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import submitHandler from "./submitHandler";
 import "./style.less";
 import { LoignUserInterface } from "./LoignUserInterface";
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import initStatusState, {
   isLoggedIn,
 } from "../../../store/initStatusState.store";

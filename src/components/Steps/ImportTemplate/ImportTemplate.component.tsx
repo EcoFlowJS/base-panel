@@ -1,6 +1,6 @@
 import { Panel } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
-import { Form, FormGroup, Uploader } from "@eco-flow/components-lib";
+import { Form, FormGroup, Uploader } from "@ecoflow/components-lib";
 import { useLayoutEffect } from "react";
 
 interface ImportTemplateProps {

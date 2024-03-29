@@ -12,7 +12,7 @@ import {
   errorNotification,
   successNotification,
 } from "../../store/notification.store";
-import { useNotification } from "@eco-flow/components-lib";
+import { useNotification } from "@ecoflow/components-lib";
 import { userPermissions } from "../../store/users.store";
 import defaultPermissions from "../../defaults/defaultPermissions.default";
 import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";

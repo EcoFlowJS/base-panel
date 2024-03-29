@@ -1,5 +1,5 @@
 {
-  "name": "@eco-flow/base-panel",
+  "name": "@ecoflow/base-panel",
   "private": true,
   "main": "./index.cjs",
   "types": "./index.d.ts",
@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@eco-flow/components-lib": "^0.1.0",
+    "@ecoflow/components-lib": "^0.1.0",
     "axios": "^1.6.3",
     "jotai": "^2.6.1",
     "less": "^4.2.0",
