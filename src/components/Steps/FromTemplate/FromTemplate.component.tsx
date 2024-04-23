@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react";
-import { Input, Panel } from "rsuite";
+import { Form, Input, Panel } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
-import { Form, FormGroup } from "@ecoflow/components-lib";
+import { FormGroup } from "@ecoflow/components-lib";
 
 interface FromTemplateProps {
   defaultvalue?: string;

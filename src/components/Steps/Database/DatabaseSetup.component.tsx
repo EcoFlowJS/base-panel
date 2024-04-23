@@ -1,12 +1,7 @@
-import { Input, InputNumber, Panel, SelectPicker, Toggle } from "rsuite";
+import { Form, Input, InputNumber, Panel, SelectPicker, Toggle } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
 import { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Form,
-  FormGroup,
-  InputEnv,
-  InputPasswordEnv,
-} from "@ecoflow/components-lib";
+import { FormGroup, InputEnv, InputPasswordEnv } from "@ecoflow/components-lib";
 import { DB_Config, DB_DriverList } from "./DB_DriverList";
 
 interface DatabaseSetupProps {
