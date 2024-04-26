@@ -1,7 +1,7 @@
 import { Form, Input, Panel } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
 import { FormGroup, InputPassword } from "@ecoflow/components-lib";
-import { useLayoutEffect } from "react";
+import { SyntheticEvent, useLayoutEffect } from "react";
 import defaultUsers from "./defaultDetails";
 import "./style.less";
 
@@ -10,7 +10,7 @@ interface UserCreationProps {
   onEnter?: () => void;
   onChange?: (
     value: any,
-    event?: React.SyntheticEvent<Element, Event> | undefined
+    event?: SyntheticEvent<Element, Event> | undefined
   ) => void;
   onExit?: () => void;
 }

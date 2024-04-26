@@ -1,12 +1,13 @@
 import { ApiResponse } from "@ecoflow/types";
 import { LoignUserInterface } from "./LoignUserInterface";
 import userLoginService from "../../../service/user/userLogin.service";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 
 const submitHandler = (
   _checkStatus: boolean,
-  event: React.FormEvent<HTMLFormElement>,
+  event: FormEvent<HTMLFormElement>,
   formValue: LoignUserInterface,
-  setResponse: React.Dispatch<React.SetStateAction<ApiResponse>>
+  setResponse: Dispatch<SetStateAction<ApiResponse>>
 ) => {
   event.preventDefault();
   let isUsername = false;

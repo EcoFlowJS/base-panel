@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Divider, FlexboxGrid, Steps } from "rsuite";
 import Welcome from "../../components/Steps/Welcome/Welcome.component";
 import ProjectType from "../../components/Steps/ProjectType/ProjectType.component";
@@ -21,16 +21,15 @@ import {
 } from "../../store/notification.store";
 
 export default function SetupPage() {
-  const [step, setStep] = React.useState(0);
-  const [value, setValue] = React.useState<ISetupValues>(defaultValues);
-  const [error, setError] = React.useState<{
+  const [step, setStep] = useState(0);
+  const [value, setValue] = useState<ISetupValues>(defaultValues);
+  const [error, setError] = useState<{
     errorHeader?: string;
     errorMessage?: string;
   }>({});
-  const [loadingDatabaseConfig, setLoadingDatabaseConfig] =
-    React.useState(false);
-  const [response, setResponse] = React.useState<ApiResponse>({});
-  const [processingStep, setProcessingStep] = React.useState(false);
+  const [loadingDatabaseConfig, setLoadingDatabaseConfig] = useState(false);
+  const [response, setResponse] = useState<ApiResponse>({});
+  const [processingStep, setProcessingStep] = useState(false);
 
   const [_restartingServer, setRestartingServer] = useAtom(isRestartingServer);
   const [_clsoeServer, setCloseServer] = useAtom(isClosedServer);
