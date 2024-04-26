@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import { SyntheticEvent, useLayoutEffect } from "react";
 import { Form, Input, Panel } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
 import { FormGroup } from "@ecoflow/components-lib";
@@ -6,7 +6,7 @@ import { FormGroup } from "@ecoflow/components-lib";
 interface FromTemplateProps {
   defaultvalue?: string;
   onEnter?: () => void;
-  onChange?: (value: any, event?: React.SyntheticEvent<Element, Event>) => void;
+  onChange?: (value: any, event?: SyntheticEvent<Element, Event>) => void;
   onExit?: () => void;
 }
 

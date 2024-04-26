@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import validateDatabaseCoonnectionService from "../../service/setup/validateDatabaseCoonnection.service";
 import { ISetupValues } from "./SetupValues.interfaace";
 
@@ -13,14 +14,14 @@ const isValidUrl = (url: string) => {
 const validator = (
   step: number,
   value: ISetupValues,
-  setError: React.Dispatch<
-    React.SetStateAction<{
+  setError: Dispatch<
+    SetStateAction<{
       errorHeader?: string | undefined;
       errorMessage?: string | undefined;
     }>
   >,
   stepChange: (nextStep: number) => void,
-  databaseValidating: React.Dispatch<React.SetStateAction<boolean>>
+  databaseValidating: Dispatch<SetStateAction<boolean>>
 ) => {
   const next = () => stepChange(step + 1);
   switch (step) {

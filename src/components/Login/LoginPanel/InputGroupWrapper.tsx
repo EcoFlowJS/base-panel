@@ -1,12 +1,12 @@
 import { IconWrapper } from "@ecoflow/components-lib";
-import React from "react";
+import { FC, HTMLAttributes, ReactElement } from "react";
 import { InputGroup } from "rsuite";
 
 interface InputGroupWrapperProps {
-  icon: React.FC<React.HTMLAttributes<SVGElement>>;
-  children?: React.ReactElement | React.ReactElement[] | string[] | string;
+  icon: FC<HTMLAttributes<SVGElement>>;
+  children?: ReactElement | ReactElement[] | string[] | string;
   isPassword?: {
-    icon: React.FC<React.HTMLAttributes<SVGElement>>;
+    icon: FC<HTMLAttributes<SVGElement>>;
     onClick?: () => void;
   };
 }
