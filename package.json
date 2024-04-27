@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ecoflow/components-lib": "^0.1.1",
+    "@ecoflow/components-lib": "latest",
     "axios": "^1.6.3",
     "jotai": "^2.6.1",
     "less": "^4.2.0",
