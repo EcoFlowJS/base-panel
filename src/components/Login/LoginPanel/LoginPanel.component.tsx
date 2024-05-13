@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button, FlexboxGrid, Form, Input, Panel } from "rsuite";
 import { GrLogin, GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
@@ -67,9 +67,13 @@ export default function LoginPanel() {
           <Form
             formValue={formValue}
             formDefaultValue={formValue}
-            onSubmit={(checkStatus, event) => {
+            onSubmit={(
+              checkStatus: Record<string, any> | null,
+              event?: FormEvent<HTMLFormElement>
+            ) => {
               setProcessing(true);
-              submitHandler(checkStatus, event, formValue, setResponse);
+              if (checkStatus && event)
+                submitHandler(true, event, formValue, setResponse);
             }}
           >
             <Form.Group>
