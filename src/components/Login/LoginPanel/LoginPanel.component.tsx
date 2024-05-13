@@ -1,28 +1,21 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Button, FlexboxGrid, Form, Input, Panel } from "rsuite";
+import { Button, FlexboxGrid, Form, Panel } from "rsuite";
 import { GrLogin, GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
 import { IconWrapper } from "@ecoflow/components-lib";
-import EyeIcon from "@rsuite/icons/legacy/Eye";
-import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 import InputGroupWrapper from "./InputGroupWrapper";
 import { RiLockPasswordLine } from "react-icons/ri";
 import submitHandler from "./submitHandler";
 import "./style.less";
-import { LoignUserInterface } from "./LoignUserInterface";
 import { ApiResponse } from "@ecoflow/types";
 import initStatusState, {
   isLoggedIn,
 } from "../../../store/initStatusState.store";
 import { useAtom } from "jotai";
 import { errorNotification } from "../../../store/notification.store";
+import defaultLoginParams from "../../../defaults/defaultLoginParams.default";
 
 export default function LoginPanel() {
-  const [isPasswordShow, setPasswordShow] = useState(false);
-  const [formValue, setFormValue] = useState<LoignUserInterface>({
-    username: "",
-    password: "",
-  });
   const [isProcessing, setProcessing] = useState(false);
   const [response, setResponse] = useState<ApiResponse>({});
   const [initStatus, setinitStatus] = useAtom(initStatusState);
@@ -32,18 +25,19 @@ export default function LoginPanel() {
 
   useEffect(() => {
     setProcessing(false);
-    if (response.error)
+    const { success, error, payload } = response;
+    if (error)
       setErrorNotification({
         show: true,
         header: "Sign in error",
-        message: response.payload,
+        message: payload,
       });
 
-    if (response.success) {
+    if (success) {
       setinitStatus({
         ...initStatus,
         isLoggedIn: true,
-        userID: formValue.username,
+        userID: payload.user,
       });
       setLoggedIn(true);
     }
@@ -65,51 +59,36 @@ export default function LoginPanel() {
           style={{ flexDirection: "column", paddingBottom: "5rem" }}
         >
           <Form
-            formValue={formValue}
-            formDefaultValue={formValue}
+            formDefaultValue={defaultLoginParams}
             onSubmit={(
-              checkStatus: Record<string, any> | null,
+              formValue: Record<string, any> | null,
               event?: FormEvent<HTMLFormElement>
             ) => {
               setProcessing(true);
-              if (checkStatus && event)
-                submitHandler(true, event, formValue, setResponse);
+              event?.preventDefault();
+              if (formValue) submitHandler(true, formValue, setResponse);
             }}
           >
             <Form.Group>
-              <InputGroupWrapper icon={FaRegUser}>
-                <Input
-                  disabled={isProcessing}
-                  name="username"
-                  placeholder="Username"
-                  onChange={(value) =>
-                    setFormValue({ ...formValue, username: value })
-                  }
-                  value={formValue.username}
-                  autoComplete="off"
-                />
-              </InputGroupWrapper>
+              <Form.Control
+                name="username"
+                accepter={InputGroupWrapper}
+                icon={FaRegUser}
+                disabled={isProcessing}
+                placeholder="Username"
+                autoComplete="off"
+              />
             </Form.Group>
             <Form.Group>
-              <InputGroupWrapper
+              <Form.Control
+                name="password"
+                accepter={InputGroupWrapper}
+                isPassword={true}
                 icon={RiLockPasswordLine}
-                isPassword={{
-                  icon: isPasswordShow ? EyeSlashIcon : EyeIcon,
-                  onClick: () => setPasswordShow(!isPasswordShow),
-                }}
-              >
-                <Input
-                  disabled={isProcessing}
-                  name="password"
-                  type={isPasswordShow ? "text" : "password"}
-                  placeholder="Password"
-                  onChange={(value) =>
-                    setFormValue({ ...formValue, password: value })
-                  }
-                  value={formValue.password}
-                  autoComplete="off"
-                />
-              </InputGroupWrapper>
+                disabled={isProcessing}
+                placeholder="Password"
+                autoComplete="off"
+              />
             </Form.Group>
             <Form.Group>
               <Button

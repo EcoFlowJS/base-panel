@@ -1,15 +1,12 @@
 import { ApiResponse } from "@ecoflow/types";
-import { LoignUserInterface } from "./LoignUserInterface";
 import userLoginService from "../../../service/user/userLogin.service";
-import { Dispatch, FormEvent, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 const submitHandler = (
   _checkStatus: boolean,
-  event: FormEvent<HTMLFormElement>,
-  formValue: LoignUserInterface,
+  formValue: Record<string, any>,
   setResponse: Dispatch<SetStateAction<ApiResponse>>
 ) => {
-  event.preventDefault();
   let isUsername = false;
   let isPassword = false;
   let isPasswordLength = false;
@@ -57,7 +54,12 @@ const submitHandler = (
     return;
   }
 
-  userLoginService(username, password).then(setResponse);
+  userLoginService(username, password).then((response) => {
+    if (typeof response.payload === "string")
+      response.payload = { accessToken: response.payload };
+    response.payload.user = username;
+    setResponse(response);
+  });
 };
 
 export default submitHandler;

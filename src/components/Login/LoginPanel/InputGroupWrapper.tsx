@@ -1,31 +1,31 @@
 import { IconWrapper } from "@ecoflow/components-lib";
-import { FC, HTMLAttributes, ReactElement } from "react";
-import { InputGroup } from "rsuite";
+import { FC, HTMLAttributes, useState } from "react";
+import { Input, InputGroup, InputProps } from "rsuite";
+import EyeIcon from "@rsuite/icons/legacy/Eye";
+import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 
-interface InputGroupWrapperProps {
+interface InputGroupWrapperProps extends Omit<InputProps, "as"> {
   icon: FC<HTMLAttributes<SVGElement>>;
-  children?: ReactElement | ReactElement[] | string[] | string;
-  isPassword?: {
-    icon: FC<HTMLAttributes<SVGElement>>;
-    onClick?: () => void;
-  };
+  isPassword?: boolean;
 }
 
 export default function InputGroupWrapper({
   icon,
-  children,
   isPassword,
+  ...props
 }: InputGroupWrapperProps) {
+  const [isPasswordShow, setPasswordShow] = useState(false);
+
   return (
     <InputGroup inside style={{ width: 290 }}>
       <InputGroup.Addon style={{ color: "#FFF" }}>
         <IconWrapper icon={icon} />
       </InputGroup.Addon>
-      {children}
+      <Input type={isPassword ? "password" : "text"} {...props} />
       {isPassword ? (
         <>
-          <InputGroup.Button onClick={isPassword.onClick}>
-            <IconWrapper icon={isPassword.icon} />
+          <InputGroup.Button onClick={() => setPasswordShow(!isPasswordShow)}>
+            <IconWrapper icon={isPasswordShow ? EyeSlashIcon : EyeIcon} />
           </InputGroup.Button>
         </>
       ) : (
