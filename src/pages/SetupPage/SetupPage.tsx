@@ -47,6 +47,7 @@ export default function SetupPage() {
   }, [error]);
 
   useEffect(() => {
+    setProcessingStep(false);
     if (response.error) {
       setProcessingStep(false);
       setErrorNotification({
@@ -98,7 +99,10 @@ export default function SetupPage() {
   const onNext = () =>
     validator(step, value, setError, stepChange, setLoadingDatabaseConfig);
   const onPrevious = () => stepChange(step - 1);
-  const onFinish = () => processSetup(value).then(setResponse);
+  const onFinish = () => {
+    setProcessingStep(true);
+    processSetup(value).then(setResponse);
+  };
 
   return (
     <div>
@@ -185,7 +189,7 @@ export default function SetupPage() {
         </Button>
         <Button
           disabled={processingStep}
-          loading={loadingDatabaseConfig}
+          loading={loadingDatabaseConfig || processingStep}
           onClick={
             step === 4
               ? onFinish
