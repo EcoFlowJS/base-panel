@@ -1,8 +1,10 @@
 import { Panel, RadioTile, RadioTileGroup } from "rsuite";
 import StepHeader from "../Header/StepHeader.component";
-import { Icon } from "@rsuite/icons";
-import { VscNotebookTemplate, VscRepoClone, VscFile } from "react-icons/vsc";
-import { SyntheticEvent, useEffect, useLayoutEffect, useState } from "react";
+import { VscFile } from "react-icons/vsc";
+import { RiImportFill } from "react-icons/ri";
+import { SyntheticEvent, useEffect } from "react";
+import { HiOutlineTemplate } from "react-icons/hi";
+import { IconWrapper } from "@ecoflow/components-lib";
 
 interface ProjectTypeProps {
   defaultValue?: string | number;
@@ -17,17 +19,6 @@ export default function ProjectType({
   onExit = () => {},
   onChange = () => {},
 }: ProjectTypeProps) {
-  const [isInline, setIsInline] = useState(false);
-
-  useLayoutEffect(() => {
-    const updateSize = () => {
-      setIsInline(window.innerWidth >= 1200);
-    };
-    window.addEventListener("resize", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-
   useEffect(() => {
     onEnter();
     return onExit();
@@ -47,11 +38,10 @@ export default function ProjectType({
         <RadioTileGroup
           onChange={onChange}
           defaultValue={defaultValue}
-          inline={isInline}
           aria-label="Create new project"
         >
           <RadioTile
-            icon={<Icon as={VscFile} />}
+            icon={<IconWrapper icon={VscFile} />}
             label="Create blank project"
             value="blank"
           >
@@ -59,15 +49,17 @@ export default function ProjectType({
             collaborate on code, among other things.
           </RadioTile>
           <RadioTile
-            icon={<Icon as={VscNotebookTemplate} />}
+            icon={<IconWrapper icon={HiOutlineTemplate} />}
             label="Create from template"
             value="template"
+            disabled
+            title="Still under development"
           >
             Create a project pre-populated with the necessary files to get you
             started quickly.
           </RadioTile>
           <RadioTile
-            icon={<Icon as={VscRepoClone} />}
+            icon={<IconWrapper icon={RiImportFill} />}
             label="Import project"
             value="import"
           >

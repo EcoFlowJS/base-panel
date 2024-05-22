@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import validateDatabaseCoonnectionService from "../../service/setup/validateDatabaseCoonnection.service";
-import { ISetupValues } from "./SetupValues.interfaace";
+import { ISetupValues } from "./SetupValues.interface";
 
 const isValidUrl = (url: string) => {
   try {

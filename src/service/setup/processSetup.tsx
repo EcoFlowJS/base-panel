@@ -1,12 +1,11 @@
 import { ApiResponse } from "@ecoflow/types";
-import { ISetupValues } from "../../pages/SetupPage/SetupValues.interfaace";
+import { ISetupValues } from "../../pages/SetupPage/SetupValues.interface";
 import axios from "../../utils/axios/axios";
 
 const processSetup = async (values: ISetupValues): Promise<ApiResponse> => {
   if (values.projectType === "import") {
     const formData = new FormData();
     formData.append("importFile", values.importFile![0]);
-    formData.append("importFileName", values.importFile![0].name);
 
     const upload: ApiResponse = (
       await axios.post("setup/import", formData, {
@@ -16,18 +15,7 @@ const processSetup = async (values: ISetupValues): Promise<ApiResponse> => {
       })
     ).data;
 
-    if (upload.error) return upload;
-
-    const res: ApiResponse = (
-      await axios.patch("setup/import", {
-        newFileName: upload.payload.newFileName,
-      })
-    ).data;
-
-    return {
-      ...res,
-      payload: [upload.payload.msg, res.payload],
-    };
+    return upload;
   }
 
   if (values.projectType === "blank") {

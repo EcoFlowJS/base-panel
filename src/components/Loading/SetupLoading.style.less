@@ -1,0 +1,18 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.donut {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 0.2rem solid rgba(151, 159, 208, 0.3);
+  border-top-color: #979fd0;
+  animation: 2s spin infinite linear;
+
+  &.multi {
+    border-bottom-color: #979fd0;
+  }
+}
