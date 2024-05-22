@@ -7,7 +7,7 @@ import DatabaseSetup from "../../components/Steps/Database/DatabaseSetup.compone
 import ImportTemplate from "../../components/Steps/ImportTemplate/ImportTemplate.component";
 import FromTemplate from "../../components/Steps/FromTemplate/FromTemplate.component";
 import defaultValues from "./defaultValues";
-import { ISetupValues } from "./SetupValues.interfaace";
+import { ISetupValues } from "./SetupValues.interface";
 import validator from "./validatror";
 import Finish from "../../components/Steps/Finish/Finish.component";
 import processSetup from "../../service/setup/processSetup";
@@ -76,6 +76,7 @@ export default function SetupPage() {
           : "",
       });
       setProcessingStep(true);
+      // setProcessingStep(false);
       if (response.payload.restart)
         setTimeout(
           () => isServerOnline([setCloseServer, setRestartingServer]),
@@ -170,10 +171,10 @@ export default function SetupPage() {
         <></>
       )}
       {step === 4 && value.projectType === "blank" ? (
-        <Finish value={value} onResponse={setResponse} />
+        <Finish value={value} />
       ) : step === 3 &&
         (value.projectType === "import" || value.projectType === "template") ? (
-        <Finish value={value} onResponse={setResponse} />
+        <Finish value={value} />
       ) : (
         <></>
       )}

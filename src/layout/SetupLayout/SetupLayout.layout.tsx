@@ -16,10 +16,8 @@ export default function SetupLayout() {
         >
           <FlexboxGrid.Item
             as={Col}
-            colspan={12}
             xs={24}
             sm={24}
-            md={12}
             style={{ padding: "30px 0", maxWidth: 850 }}
           >
             <Panel bordered shaded>

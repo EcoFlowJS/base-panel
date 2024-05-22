@@ -1,5 +1,5 @@
 import { ApiResponse } from "@ecoflow/types";
-import { ISetupValues } from "../../pages/SetupPage/SetupValues.interfaace";
+import { ISetupValues } from "../../pages/SetupPage/SetupValues.interface";
 import axios from "../../utils/axios/axios";
 
 const validateDatabaseCoonnectionService = async (
