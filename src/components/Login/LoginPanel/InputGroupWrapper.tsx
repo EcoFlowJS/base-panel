@@ -14,18 +14,22 @@ export default function InputGroupWrapper({
   isPassword,
   ...props
 }: InputGroupWrapperProps) {
-  const [isPasswordShow, setPasswordShow] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const handleChange = () => {
+    setVisible(!visible);
+  };
 
   return (
     <InputGroup inside style={{ width: 290 }}>
       <InputGroup.Addon style={{ color: "#FFF" }}>
         <IconWrapper icon={icon} />
       </InputGroup.Addon>
-      <Input type={isPassword ? "password" : "text"} {...props} />
+      <Input type={visible ? "text" : "password"} {...props} />
       {isPassword ? (
         <>
-          <InputGroup.Button onClick={() => setPasswordShow(!isPasswordShow)}>
-            <IconWrapper icon={isPasswordShow ? EyeSlashIcon : EyeIcon} />
+          <InputGroup.Button onClick={handleChange}>
+            <IconWrapper icon={visible ? EyeSlashIcon : EyeIcon} />
           </InputGroup.Button>
         </>
       ) : (
