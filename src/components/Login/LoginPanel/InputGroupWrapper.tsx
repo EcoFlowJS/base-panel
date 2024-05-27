@@ -14,7 +14,7 @@ export default function InputGroupWrapper({
   isPassword,
   ...props
 }: InputGroupWrapperProps) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(isPassword ? false : true);
 
   const handleChange = () => {
     setVisible(!visible);
