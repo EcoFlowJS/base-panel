@@ -1,5 +1,4 @@
-import { useAtom } from "jotai";
-import { CiDark, CiLight } from "react-icons/ci";
+import { useAtom, useAtomValue } from "jotai";
 import {
   Divider,
   FlexboxGrid,
@@ -10,28 +9,36 @@ import {
 } from "rsuite";
 import themeMode from "../../../store/theme.mode";
 import { LuLogOut } from "react-icons/lu";
-import styles from "./style";
 import initStatusState, {
   isLoggedOut,
 } from "../../../store/initStatusState.store";
 import { IconWrapper } from "@ecoflow/components-lib";
-import logoutHandler from "./logoutHaandler";
+import userSignoutService from "../../../service/user/userSignout.service";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { ApiResponse } from "@ecoflow/types";
 
 export default function DashboardHeader() {
   const [darkMode, setDarkMode] = useAtom(themeMode);
-  const [initStatus] = useAtom(initStatusState);
+  const initStatus = useAtomValue(initStatusState);
   const [_loggedOut, setLogOut] = useAtom(isLoggedOut);
 
   const toogleMode = () => setDarkMode(!darkMode);
 
+  const logoutHandler = (setLogout: any) => {
+    userSignoutService().then((response: ApiResponse) => {
+      if (response.success) setLogout(true);
+    });
+  };
+
   return (
     <FlexboxGrid justify="end" align="middle">
       <FlexboxGrid.Item style={{ padding: "1rem" }}>
-        <Panel bordered bodyFill style={styles.ModePanel}>
+        <Panel
+          bordered
+          bodyFill
+          style={{ padding: "0.5rem", borderWidth: "2px" }}
+        >
           <FlexboxGrid justify="center" align="middle">
-            <FlexboxGrid.Item style={styles.Modelable}>
-              <span>Mode :</span>
-            </FlexboxGrid.Item>
             <FlexboxGrid.Item>
               <Whisper
                 placement="bottom"
@@ -40,9 +47,15 @@ export default function DashboardHeader() {
                 <IconButton
                   appearance="link"
                   size="sm"
-                  icon={darkMode ? <CiLight /> : <CiDark />}
+                  icon={
+                    <IconWrapper icon={darkMode ? MdLightMode : MdDarkMode} />
+                  }
                   onClick={toogleMode}
-                  style={styles.ModeIcon}
+                  style={{
+                    fontSize: "1.2rem",
+                    padding: "0",
+                    color: "var(--rs-text-primary)",
+                  }}
                 />
               </Whisper>
             </FlexboxGrid.Item>
@@ -57,7 +70,11 @@ export default function DashboardHeader() {
                     appearance="link"
                     title="logout"
                     icon={<IconWrapper icon={LuLogOut} />}
-                    style={styles.LogoutIcon}
+                    style={{
+                      fontSize: "1.2rem",
+                      padding: "0",
+                      color: "var(--rs-text-primary)",
+                    }}
                     onClick={() => logoutHandler(setLogOut)}
                   />
                 </Whisper>
