@@ -1,6 +1,6 @@
 import { Content } from "rsuite";
 import Footer from "../../components/Footer/Footer";
-import LoginPanel from "../../components/Login/LoginPanel/LoginPanel.component";
+import LoginPanel from "../../components/LoginPanel/LoginPanel.component";
 
 export default function LoginPage() {
   return (

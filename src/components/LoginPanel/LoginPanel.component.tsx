@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button, FlexboxGrid, Form, Panel } from "rsuite";
 import { GrLogin, GrUserManager } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
@@ -6,42 +6,42 @@ import { IconWrapper } from "@ecoflow/components-lib";
 import InputGroupWrapper from "./InputGroupWrapper";
 import { RiLockPasswordLine } from "react-icons/ri";
 import submitHandler from "./submitHandler";
+import initStatusState, { isLoggedIn } from "../../store/initStatusState.store";
+import { useAtom, useSetAtom } from "jotai";
+import { errorNotification } from "../../store/notification.store";
+import defaultLoginParams from "../../defaults/defaultLoginParams.default";
 import "./style.less";
-import { ApiResponse } from "@ecoflow/types";
-import initStatusState, {
-  isLoggedIn,
-} from "../../../store/initStatusState.store";
-import { useAtom } from "jotai";
-import { errorNotification } from "../../../store/notification.store";
-import defaultLoginParams from "../../../defaults/defaultLoginParams.default";
 
 export default function LoginPanel() {
   const [isProcessing, setProcessing] = useState(false);
-  const [response, setResponse] = useState<ApiResponse>({});
   const [initStatus, setinitStatus] = useAtom(initStatusState);
   const [_loggedIn, setLoggedIn] = useAtom(isLoggedIn);
 
-  const setErrorNotification = useAtom(errorNotification)[1];
+  const setErrorNotification = useSetAtom(errorNotification);
 
-  useEffect(() => {
-    setProcessing(false);
-    const { success, error, payload } = response;
-    if (error)
-      setErrorNotification({
-        show: true,
-        header: "Sign in error",
-        message: payload,
-      });
-
-    if (success) {
-      setinitStatus({
-        ...initStatus,
-        isLoggedIn: true,
-        userID: payload.user,
-      });
-      setLoggedIn(true);
-    }
-  }, [response]);
+  const handelFormSubmit = (
+    formValue: Record<"username" | "password", string>
+  ) => {
+    submitHandler(formValue).then(
+      ({ user }) => {
+        setProcessing(false);
+        setinitStatus({
+          ...initStatus,
+          isLoggedIn: true,
+          userID: user,
+        });
+        setLoggedIn(true);
+      },
+      (reject) => {
+        setProcessing(false);
+        setErrorNotification({
+          show: true,
+          header: "Sign in error",
+          message: reject,
+        });
+      }
+    );
+  };
 
   return (
     <>
@@ -61,12 +61,12 @@ export default function LoginPanel() {
           <Form
             formDefaultValue={defaultLoginParams}
             onSubmit={(
-              formValue: Record<string, any> | null,
+              formValue: Record<"username" | "password", string> | null,
               event?: FormEvent<HTMLFormElement>
             ) => {
               setProcessing(true);
               event?.preventDefault();
-              if (formValue) submitHandler(true, formValue, setResponse);
+              if (formValue) handelFormSubmit(formValue);
             }}
           >
             <Form.Group>
