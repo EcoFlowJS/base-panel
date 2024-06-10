@@ -12,6 +12,7 @@
   },
   "files": [
     "README.md",
+    "LICENSE",
     "dist",
     "index.cjs",
     "index.d.ts",
@@ -19,7 +20,7 @@
     "public"
   ],
   "dependencies": {
-    "@ecoflow/components-lib": "^0.1.28",
+    "@ecoflow/components-lib": "^0.1.29",
     "axios": "^1.6.3",
     "jotai": "^2.6.1",
     "less": "^4.2.0",
@@ -53,7 +54,7 @@
     "url": "git+https://github.com/EcoFlowJS/base-panel.git"
   },
   "author": "EcoFlowJS",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/EcoFlowJS/base-panel/issues"
   },
