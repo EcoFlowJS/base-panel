@@ -22,7 +22,7 @@ export default function InputGroupWrapper({
 
   return (
     <InputGroup inside style={{ width: 290 }}>
-      <InputGroup.Addon style={{ color: "#FFF" }}>
+      <InputGroup.Addon style={{ color: "var(--rs-text-primary)" }}>
         <IconWrapper icon={icon} />
       </InputGroup.Addon>
       <Input type={visible ? "text" : "password"} {...props} />

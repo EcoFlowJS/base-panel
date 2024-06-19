@@ -63,7 +63,7 @@ export default function DatabaseSetup({
             name="useDefault"
             label="Use default database : "
             accepter={Toggle}
-            defaultChecked={value.useDefault}
+            checked={value.useDefault}
           />
           {!value.useDefault ? (
             <>

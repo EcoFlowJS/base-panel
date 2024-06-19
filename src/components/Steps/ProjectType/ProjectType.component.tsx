@@ -63,8 +63,7 @@ export default function ProjectType({
             label="Import project"
             value="import"
           >
-            Migrate your data from an external source like GitHub, Bitbucket, or
-            another instance of GitLab.
+            Migrate your data from an exported project file.
           </RadioTile>
         </RadioTileGroup>
       </Panel>
