@@ -11,6 +11,8 @@ export default function BlankSetup({ value }: BlankSetupProps) {
   const leftPanelRef = useRef(null);
   const [rightPanelHeight, setRightPanelHeight] = useState(0);
   const [leftPanelHeight, setLeftPanelHeight] = useState(0);
+  const [passwordDatabaseText, setPasswordDatabaseText] = useState("*****");
+  const [passwordText, setPasswordText] = useState("*****");
 
   useEffect(() => {
     if (rightPanelRef !== null && leftPanelRef !== null)
@@ -91,10 +93,19 @@ export default function BlankSetup({ value }: BlankSetupProps) {
                   <Divider />
                   <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item>Password :-</FlexboxGrid.Item>
-                    <FlexboxGrid.Item style={{ wordWrap: "break-word" }}>
+                    <FlexboxGrid.Item
+                      style={{ wordWrap: "break-word" }}
+                      onMouseEnter={() => {
+                        console.log("mouse enter");
+                        setPasswordDatabaseText(
+                          value.database.databaseConfigurationPassword
+                        );
+                      }}
+                      onMouseLeave={() => setPasswordDatabaseText("*****")}
+                    >
                       {value.database.envPassword
                         ? `env(${value.database.databaseConfigurationPassword})`
-                        : "*****"}
+                        : passwordDatabaseText}
                     </FlexboxGrid.Item>
                   </FlexboxGrid>
                   <Divider />
@@ -161,7 +172,12 @@ export default function BlankSetup({ value }: BlankSetupProps) {
           <Divider />
           <FlexboxGrid justify="space-between">
             <FlexboxGrid.Item>Password :</FlexboxGrid.Item>
-            <FlexboxGrid.Item>*****</FlexboxGrid.Item>
+            <FlexboxGrid.Item
+              onMouseEnter={() => setPasswordText(value!.userInfo.password)}
+              onMouseLeave={() => setPasswordText("*****")}
+            >
+              {passwordText}
+            </FlexboxGrid.Item>
           </FlexboxGrid>
           <Divider />
           <FlexboxGrid justify="space-between">

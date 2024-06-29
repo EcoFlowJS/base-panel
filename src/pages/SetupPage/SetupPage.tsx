@@ -212,6 +212,8 @@ export default function SetupPage() {
             ? "Finish"
             : step === 3 && value.projectType !== "blank"
             ? "Finish"
+            : step === 0
+            ? "Accept and Continue"
             : "Next"}
         </Button>
       </FlexboxGrid>
