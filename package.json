@@ -20,7 +20,7 @@
     "public"
   ],
   "dependencies": {
-    "@ecoflow/components-lib": "^0.1.30",
+    "@ecoflow/components-lib": "^0.1.31",
     "axios": "^1.6.3",
     "jotai": "^2.6.1",
     "less": "^4.2.0",
