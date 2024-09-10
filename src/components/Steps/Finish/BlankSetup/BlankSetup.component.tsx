@@ -95,12 +95,11 @@ export default function BlankSetup({ value }: BlankSetupProps) {
                     <FlexboxGrid.Item>Password :-</FlexboxGrid.Item>
                     <FlexboxGrid.Item
                       style={{ wordWrap: "break-word" }}
-                      onMouseEnter={() => {
-                        console.log("mouse enter");
+                      onMouseEnter={() =>
                         setPasswordDatabaseText(
                           value.database.databaseConfigurationPassword
-                        );
-                      }}
+                        )
+                      }
                       onMouseLeave={() => setPasswordDatabaseText("*****")}
                     >
                       {value.database.envPassword

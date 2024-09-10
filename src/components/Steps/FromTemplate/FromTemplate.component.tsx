@@ -18,8 +18,6 @@ export default function FromTemplate({
 }: FromTemplateProps) {
   useLayoutEffect(() => {
     onEnter();
-    console.log(defaultvalue);
-
     return onExit();
   }, []);
 

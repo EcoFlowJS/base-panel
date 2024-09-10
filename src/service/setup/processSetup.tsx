@@ -15,8 +15,6 @@ const processSetup = async (values: ISetupValues): Promise<ApiResponse> => {
       })
     ).data;
 
-    console.log(upload);
-
     return upload;
   }
 
